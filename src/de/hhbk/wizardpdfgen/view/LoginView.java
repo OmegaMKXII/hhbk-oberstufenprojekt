@@ -1,13 +1,14 @@
-package sample;
+package de.hhbk.wizardpdfgen.view;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import sample.util.Authorisation;
+import de.hhbk.wizardpdfgen.model.enums.AuthorisationLevel;
+import de.hhbk.wizardpdfgen.main.Main;
 
 import java.io.IOException;
 
-public class Controller {
+public class LoginView {
 
     @FXML
     Label loginLabel;
@@ -53,7 +54,7 @@ public class Controller {
     public static String getStatus()
     {
 
-        String status = Authorisation.ADMIN.toString();
+        String status = AuthorisationLevel.ADMIN.toString();
         return status;
     }
 
