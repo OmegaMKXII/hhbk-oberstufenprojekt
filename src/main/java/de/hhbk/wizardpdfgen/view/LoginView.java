@@ -1,5 +1,6 @@
 package de.hhbk.wizardpdfgen.view;
 
+import de.hhbk.wizardpdfgen.viewmodel.LoginViewModel;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.fxml.FXML;
@@ -13,7 +14,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class LoginView implements FxmlView<de.hhbk.wizardpdfgen.viewmodel.viewModel>, Initializable {
+public class LoginView implements FxmlView<LoginViewModel>, Initializable {
 
     @FXML
     Label loginLabel;
@@ -30,7 +31,7 @@ public class LoginView implements FxmlView<de.hhbk.wizardpdfgen.viewmodel.viewMo
     Button loginButton;
 
     @InjectViewModel
-    de.hhbk.wizardpdfgen.viewmodel.viewModel viewModel;
+    LoginViewModel viewModel;
 
 
 //    public void initialize() {

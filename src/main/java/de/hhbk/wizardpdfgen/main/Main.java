@@ -1,11 +1,12 @@
 package de.hhbk.wizardpdfgen.main;
 
 import de.hhbk.wizardpdfgen.view.LoginView;
-import de.hhbk.wizardpdfgen.viewmodel.viewModel;
+import de.hhbk.wizardpdfgen.viewmodel.LoginViewModel;
 import de.saxsys.mvvmfx.FluentViewLoader;
 import de.saxsys.mvvmfx.ViewModel;
 import de.saxsys.mvvmfx.ViewTuple;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -25,7 +26,7 @@ public class Main extends Application {
         Main.stage = primaryStage;
 
         // Loads the object hierarchy from each FXML document
-        final ViewTuple<LoginView, viewModel> viewTuple = FluentViewLoader.fxmlView(LoginView.class).load();
+        final ViewTuple<LoginView, LoginViewModel> viewTuple = FluentViewLoader.fxmlView(LoginView.class).load();
         final Parent loginWindow = viewTuple.getView();
         // Parent loginWindow = FXMLLoader.load(getClass().getResource("../../../../resources/loginWindow.fxml"));
 //        Parent mainWindow = FXMLLoader.load(getClass().getResource("../../../../resources/mainWindow.fxml"));
