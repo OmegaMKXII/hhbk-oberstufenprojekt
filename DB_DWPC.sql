@@ -35,3 +35,14 @@ CREATE TABLE IF NOT EXISTS `User` (
   FOREIGN KEY (FK_TemplateID) REFERENCES Template(TemplateID),
   FOREIGN KEY (FK_ConfigurationID) REFERENCES Configuration(ConfigurationID),
   PRIMARY KEY (FK_TemplateID, FK_ConfigurationID));
+
+    //inserts
+    INSERT INTO Authorisation values
+    (NULL,"Admin"),
+    (NULL,"Teacher"),
+    (NULL,"Guest");
+
+    INSERT INTO User values
+    (NULL,"Kenji","kenji",1),
+     (NULL,"Dresen","dresen",2),
+    (NULL,"Monika","test",3);
