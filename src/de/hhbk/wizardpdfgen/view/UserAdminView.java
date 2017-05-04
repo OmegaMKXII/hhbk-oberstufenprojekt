@@ -1,4 +1,4 @@
-package sample;
+package de.hhbk.wizardpdfgen.view;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -6,11 +6,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import de.hhbk.wizardpdfgen.main.Main;
 
 /**
  * Created by monikaschepan on 02.05.17.
  */
-public class BenutzerController {
+public class UserAdminView {
 
     @FXML
     ListView listviewBenutzer;
@@ -50,9 +51,6 @@ public class BenutzerController {
     }
 
     public void zurueckButtonEvent(MouseEvent mouseEvent) {
-
         Main.switchToMain();
-
-
     }
 }

@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane alignment="center" hgap="10" prefHeight="436.0" prefWidth="806.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainWindowController">
+<GridPane alignment="center" hgap="10" prefHeight="436.0" prefWidth="806.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.hhbk.wizardpdfgen.view.MainWindowView">
    <children>
       <Button fx:id="pdfGenerierenButton" mnemonicParsing="false" onMouseClicked="#pdfGenerierenButtonEvent" prefHeight="27.0" prefWidth="147.0" text="PDF generieren" GridPane.columnIndex="8" GridPane.columnSpan="3" GridPane.rowIndex="10" />
       <Button fx:id="templateLoeschenButton" mnemonicParsing="false" onMouseClicked="#templateLoeschenButtonEvent" prefHeight="27.0" prefWidth="129.0" text="template löschen" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.rowIndex="10" />

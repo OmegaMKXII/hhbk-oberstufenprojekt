@@ -1,9 +1,9 @@
-package sample.util;
+package de.hhbk.wizardpdfgen.model.enums;
 
 /**
  * Created by monikaschepan on 02.05.17.
  */
-public enum Authorisation {
+public enum AuthorisationLevel {
 
     GUEST("Gast"),
     ADMIN("Admin"),
@@ -11,7 +11,7 @@ public enum Authorisation {
 
     private final String level;
 
-    private Authorisation(final String level)
+    private AuthorisationLevel(final String level)
     {
         this.level = level;
 

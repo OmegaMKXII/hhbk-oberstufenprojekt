@@ -1,14 +1,14 @@
-package sample;
+package de.hhbk.wizardpdfgen.view;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import de.hhbk.wizardpdfgen.main.Main;
 
 /**
  * Created by monikaschepan on 02.05.17.
  */
-public class TemplateController {
+public class TemplateView {
 
     @FXML
     ListView listviewTemplate;
