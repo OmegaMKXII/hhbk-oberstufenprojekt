@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<GridPane alignment="center" hgap="10" prefHeight="404.0" prefWidth="714.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.hhbk.wizardpdfgen.view.TemplateView">
+   <children>
+      <Label fx:id="templateLabel" prefHeight="29.0" prefWidth="298.0" text="Template-Generierung" GridPane.columnIndex="2" GridPane.columnSpan="4">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <ListView fx:id="listviewTemplate" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="2" GridPane.rowSpan="4" />
+      <TextField fx:id="TemplateNameTextfield" GridPane.columnIndex="2" GridPane.rowIndex="10" />
+      <Label fx:id="templateNameLabel" text="Templatename" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+      <Button fx:id="templateGenerierenButton" mnemonicParsing="false" onMouseClicked="#TemplateGenerierenButtonEvent" text="Template generieren" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="10" />
+   </children>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+   </rowConstraints>
+   <columnConstraints>
+      <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints maxWidth="107.0" minWidth="10.0" prefWidth="107.0" />
+      <ColumnConstraints maxWidth="91.0" minWidth="10.0" prefWidth="91.0" />
+      <ColumnConstraints maxWidth="86.0" minWidth="10.0" prefWidth="86.0" />
+      <ColumnConstraints maxWidth="100.0" minWidth="29.0" prefWidth="100.0" />
+      <ColumnConstraints maxWidth="102.0" minWidth="10.0" prefWidth="80.0" />
+      <ColumnConstraints maxWidth="95.0" minWidth="10.0" prefWidth="69.0" />
+      <ColumnConstraints maxWidth="95.0" minWidth="10.0" prefWidth="16.0" />
+   </columnConstraints>
+</GridPane>
