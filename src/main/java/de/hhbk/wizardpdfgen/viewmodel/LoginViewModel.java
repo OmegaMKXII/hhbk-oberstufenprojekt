@@ -14,7 +14,7 @@ import de.saxsys.mvvmfx.ViewModel;
  */
 public class LoginViewModel implements ViewModel {
 
-    static User currentUser;
+  public static User currentUser;
 
     private StringProperty username = new SimpleStringProperty();
     private StringProperty password = new SimpleStringProperty();

@@ -70,9 +70,9 @@ public class TemplateView implements FxmlView<LoginViewModel> {
 
             Main.switchToMain();
             String templateName =  TemplateNameTextfield.getText();
-            //Integer idUser =   LoginView.getUserID();
+           // Integer idUser =   LoginView.getUserID();
 
-       //     MySqlTemplateDAO.addTemplate(templateName, );
+          //  MySqlTemplateDAO.addTemplate(templateName, );
 
         }
 

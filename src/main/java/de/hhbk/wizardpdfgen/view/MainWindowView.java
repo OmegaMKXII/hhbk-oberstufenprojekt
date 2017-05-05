@@ -48,7 +48,7 @@ public class MainWindowView implements FxmlView<LoginViewModel>{
     @FXML
     public void initialize() {
         pdfGenerierenButton.setVisible(false);
-        String status = LoginView.getStatus();
+        String status = viewModel.currentUser.getRole();
         switch (status)
         {
             case "Lehrer":
