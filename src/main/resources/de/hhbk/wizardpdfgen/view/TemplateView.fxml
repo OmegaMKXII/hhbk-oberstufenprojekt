@@ -16,7 +16,7 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <ListView fx:id="listviewTemplate" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="2" GridPane.rowSpan="4" />
+      <ListView fx:id="listviewTemplate" onMouseClicked="#templateListviewEvent" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="2" GridPane.rowSpan="4" />
       <TextField fx:id="TemplateNameTextfield" GridPane.columnIndex="2" GridPane.rowIndex="10" />
       <Label fx:id="templateNameLabel" text="Templatename" GridPane.columnIndex="1" GridPane.rowIndex="10" />
       <Button fx:id="templateGenerierenButton" mnemonicParsing="false" onMouseClicked="#TemplateGenerierenButtonEvent" text="Template generieren" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="10" />

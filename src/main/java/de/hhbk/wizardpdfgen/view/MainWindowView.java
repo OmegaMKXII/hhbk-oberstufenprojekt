@@ -127,5 +127,6 @@ public class MainWindowView implements FxmlView<LoginViewModel>{
      */
     public void benutzerverwaltungButtonEvent(MouseEvent mouseEvent) {
         Main.switchToBenutzer();
+
     }
 }

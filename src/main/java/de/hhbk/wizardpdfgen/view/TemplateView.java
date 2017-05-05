@@ -1,15 +1,18 @@
 package de.hhbk.wizardpdfgen.view;
 
-import de.hhbk.wizardpdfgen.main.Main;
+import de.hhbk.wizardpdfgen.model.base.Configuration;
+import de.hhbk.wizardpdfgen.model.persistence.sql.MySqlTemplateDAO;
 import de.hhbk.wizardpdfgen.viewmodel.LoginViewModel;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import de.hhbk.wizardpdfgen.main.Main;
+
+import java.util.List;
 
 /**
  * Created by monikaschepan on 02.05.17.
@@ -31,12 +34,56 @@ public class TemplateView implements FxmlView<LoginViewModel> {
     @FXML
     Label templateNameLabel;
 
-
     @InjectViewModel
-    LoginViewModel viewModel;
+            LoginViewModel viewModel;
+
+    MySqlTemplateDAO mySqlTemplateDAO;
+
+    ObservableList<Configuration> templateObservableList  = FXCollections.observableArrayList();
+
+    @FXML
+    public void initialize() {
+
+        templateGenerierenButton.setVisible(false);
+        List<Configuration> configurationList = MySqlTemplateDAO.selectAllConfigurations();
+        for (Configuration c :configurationList)
+        {
+            templateObservableList.add(new Configuration(c.getId(), c.getName()));
+
+        }
+        listviewTemplate.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        listviewTemplate.setItems(templateObservableList);
+
+
+    }
 
     public void TemplateGenerierenButtonEvent(MouseEvent mouseEvent) {
 
-        Main.switchToMain();
+        if(TemplateNameTextfield.getText().isEmpty())
+        {
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Bitte geben Sie etwas in das Feld ein!");
+            alert.showAndWait();
+        }
+        else
+        {
+
+            Main.switchToMain();
+            String templateName =  TemplateNameTextfield.getText();
+            //Integer idUser =   LoginView.getUserID();
+
+       //     MySqlTemplateDAO.addTemplate(templateName, );
+
+        }
+
+
+
+
+
+    }
+
+    public void templateListviewEvent(MouseEvent mouseEvent) {
+        templateGenerierenButton.setVisible(true);
+
     }
 }

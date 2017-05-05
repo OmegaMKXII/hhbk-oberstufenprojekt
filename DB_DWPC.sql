@@ -19,7 +19,6 @@ CREATE TABLE IF NOT EXISTS `User` (
   CREATE TABLE IF NOT EXISTS `Template` (
   `TemplateID` int(255)  NOT NULL AUTO_INCREMENT,
   `Title` varchar(255) DEFAULT NULL,
-  `Description` varchar(255) DEFAULT NULL,
   `FK_UserID` int(6) DEFAULT NULL,
   PRIMARY KEY (`TemplateID`),
   FOREIGN KEY (FK_UserID) REFERENCES User(UserID));
@@ -35,14 +34,29 @@ CREATE TABLE IF NOT EXISTS `User` (
   FOREIGN KEY (FK_TemplateID) REFERENCES Template(TemplateID),
   FOREIGN KEY (FK_ConfigurationID) REFERENCES Configuration(ConfigurationID),
   PRIMARY KEY (FK_TemplateID, FK_ConfigurationID));
+  
+  
+  //inserts
+  INSERT INTO Authorisation values
+  (NULL,"Admin"),
+  (NULL,"Teacher"),
+  (NULL,"Guest");
+  
+  INSERT INTO User values
+  (NULL,"Kenji","kenji",1),
+   (NULL,"Dresen","dresen",2),
+  (NULL,"Monika","test",3);
+  
+  INSERT INTO Template values
+  (NULL, "testTemplate1",1),
+  (NULL, "testTemplate2",2),
+   (NULL, "testTemplate3",3);
+   
+   INSERT INTO Configuration values (NULL, "Einstiegsszenario"), (NULL, "Handlungsprodukt/Lernergebnis"), (NULL, "Wesentliche Kompetenzen"), (NULL, "Inhalte"), (NULL, "Unterrichtsmaterialien"), (NULL, "Organisatorische Hinweise"), (NULL, "Lern- und Arbeitstechniken"), (NULL, "Leistungsnachweis");
+  
 
-    //inserts
-    INSERT INTO Authorisation values
-    (NULL,"Admin"),
-    (NULL,"Teacher"),
-    (NULL,"Guest");
+  
+  
+  
 
-    INSERT INTO User values
-    (NULL,"Kenji","kenji",1),
-     (NULL,"Dresen","dresen",2),
-    (NULL,"Monika","test",3);
+  
