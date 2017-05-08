@@ -10,15 +10,16 @@
 
 <GridPane alignment="center" hgap="10" prefHeight="436.0" prefWidth="806.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.hhbk.wizardpdfgen.view.MainWindowView">
    <children>
-      <Button fx:id="pdfGenerierenButton" mnemonicParsing="false" onMouseClicked="#pdfGenerierenButtonEvent" prefHeight="27.0" prefWidth="147.0" text="PDF generieren" GridPane.columnIndex="8" GridPane.columnSpan="3" GridPane.rowIndex="10" />
-      <Button fx:id="templateLoeschenButton" mnemonicParsing="false" onMouseClicked="#templateLoeschenButtonEvent" prefHeight="27.0" prefWidth="129.0" text="template löschen" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.rowIndex="10" />
-      <Label fx:id="ausbildungsberufLabel" prefHeight="17.0" prefWidth="117.0" text="Ausbildungsberuf" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
-      <Label fx:id="ausbildungsjahrLabel" prefHeight="17.0" prefWidth="118.0" text="Ausbildungsjahr" GridPane.columnIndex="8" GridPane.columnSpan="3" GridPane.rowIndex="1" />
-      <ComboBox fx:id="ausbidungsberufComboBox" onAction="#ausbidungsberufComboBoxEvent" prefHeight="27.0" prefWidth="131.0" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.rowIndex="1" />
-      <ComboBox fx:id="ausbildungsjahrComboBox" onAction="#ausbidungsjahrComboBoxEvent" prefHeight="27.0" prefWidth="138.0" GridPane.columnIndex="11" GridPane.columnSpan="3" GridPane.rowIndex="1" />
-      <Button fx:id="templateGenerierenButton" mnemonicParsing="false" onMouseClicked="#templateGenerierenButtonEvent" prefHeight="27.0" prefWidth="149.0" text="template generieren" GridPane.columnIndex="6" GridPane.columnSpan="2" GridPane.rowIndex="10" />
+      <Button fx:id="generatePDFButton" mnemonicParsing="false" onMouseClicked="#pdfGenerierenButtonEvent" prefHeight="27.0" prefWidth="147.0" text="PDF generieren" GridPane.columnIndex="8" GridPane.columnSpan="3" GridPane.rowIndex="10" />
+      <Button fx:id="deleteTemplateButton" mnemonicParsing="false" onMouseClicked="#templateLoeschenButtonEvent" prefHeight="27.0" prefWidth="129.0" text="template löschen" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.rowIndex="10" />
+      <Label fx:id="skilledOccupationLabel" prefHeight="17.0" prefWidth="117.0" text="Ausbildungsberuf" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+      <Label fx:id="trainingYearLabel" prefHeight="17.0" prefWidth="118.0" text="Ausbildungsjahr" GridPane.columnIndex="8" GridPane.columnSpan="3" GridPane.rowIndex="1" />
+      <ComboBox fx:id="skilledOccupationComboBox" onAction="#skilledOccupationComboBoxEvent" prefHeight="27.0" prefWidth="131.0" promptText="Hier auswählen" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.rowIndex="1" />
+      <ComboBox fx:id="trainingYearComboBox" onAction="#ausbidungsjahrComboBoxEvent" prefHeight="27.0" prefWidth="138.0" GridPane.columnIndex="11" GridPane.columnSpan="3" GridPane.rowIndex="1" />
+      <Button fx:id="generateTemplateButton" mnemonicParsing="false" onMouseClicked="#templateGenerierenButtonEvent" prefHeight="27.0" prefWidth="149.0" text="template generieren" GridPane.columnIndex="6" GridPane.columnSpan="2" GridPane.rowIndex="10" />
       <ListView fx:id="listviewMainWIndow" prefHeight="150.0" prefWidth="578.0" GridPane.columnIndex="1" GridPane.columnSpan="11" GridPane.rowIndex="3" GridPane.rowSpan="4" />
-      <Button fx:id="benutzerverwaltungButton" mnemonicParsing="false" onMouseClicked="#benutzerverwaltungButtonEvent" text="Benuterverwaltung" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="10" />
+      <Button fx:id="userAdminButton" mnemonicParsing="false" onMouseClicked="#benutzerverwaltungButtonEvent" text="Benuterverwaltung" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="10" />
+      <Label fx:id="guideLabel" GridPane.columnIndex="1" />
    </children>
    <rowConstraints>
       <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" />

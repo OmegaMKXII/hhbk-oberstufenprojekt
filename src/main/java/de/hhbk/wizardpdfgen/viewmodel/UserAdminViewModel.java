@@ -12,8 +12,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
-import javafx.scene.input.MouseEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -30,15 +32,25 @@ public class UserAdminViewModel implements ViewModel {
 
     private MySqlUserAdministrationDAO mySqlUserAdministrationDAO;
 
+    private static Logger logger = LogManager.getLogger(UserAdminView.class);
 
 
     public void initialize(){
 
-        List<User> userList = MySqlUserAdministrationDAO.selectAllUser();
+        List<User> userList = null;
+        try {
+            userList = MySqlUserAdministrationDAO.getAllUser();
+        } catch (SQLException e) {
+            logger.info("Nutzer wird über Funktionsausfall informiert");
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Es ist ein Fehler beim Datenbankzugriff aufgetreten");
+            alert.showAndWait();
+            alert.setTitle("Datenbankzugriff gescheitert");
+            alert.setContentText("Folge: Es können keine Nutzerdaten gesehen noch bearbeitet werden.");
+        }
 
-        for (User u :userList)
+        for (User usr : userList)
         {
-            userObservableList.add(new User(u.getUsername(),u.getPassword(),u.getRole()));
+            userObservableList.add(new User(usr.getUsername(),usr.getPassword(),usr.getRole()));
         }
     }
 
@@ -48,7 +60,16 @@ public class UserAdminViewModel implements ViewModel {
     public void deleteUser() {
 
         User user = (User)listviewUser.getSelectionModel().getSelectedItem();
-        boolean isDeleted = MySqlUserAdministrationDAO.deleteUser(user.getUsername(),user.getPassword());
+        boolean isDeleted = false;
+        try {
+            isDeleted = MySqlUserAdministrationDAO.deleteUser(user);
+        } catch (SQLException e) {
+            logger.info("Nutzer wird über Funktionsausfall informiert");
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Es ist ein Fehler beim Datenbankzugriff aufgetreten");
+            alert.showAndWait();
+            alert.setTitle("Datenbankzugriff gescheitert");
+            alert.setContentText("Folge: Es können keine Nutzerdaten bearbeitet werden.");
+        }
 
         if(isDeleted)
         {
@@ -73,7 +94,16 @@ public class UserAdminViewModel implements ViewModel {
         }
 
         User usr = new User(username, password, AuthorisationLevel.TEACHER);
-        boolean isAdded = MySqlUserAdministrationDAO.insertUser(usr);
+        boolean isAdded = false;
+        try {
+            isAdded = MySqlUserAdministrationDAO.insertUser(usr);
+        } catch (SQLException e) {
+            logger.info("Nutzer wird über Funktionsausfall informiert");
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Es ist ein Fehler beim Datenbankzugriff aufgetreten");
+            alert.showAndWait();
+            alert.setTitle("Datenbankzugriff gescheitert");
+            alert.setContentText("Folge: Es können keine Nutzerdaten bearbeitet werden.");
+        }
 
         if(isAdded)
         {

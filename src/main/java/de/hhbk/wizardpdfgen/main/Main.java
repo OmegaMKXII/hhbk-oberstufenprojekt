@@ -15,6 +15,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class Main extends Application {
 
     private static Stage stage;
@@ -24,9 +27,12 @@ public class Main extends Application {
     private static Scene templateScene;
     private static Scene userAdminScene;
 
+    private static Logger logger = LogManager.getLogger(Main.class);
+
     @Override
     public void start(Stage primaryStage) throws Exception {
 
+        logger.info("Applikation gestartet");
         Main.stage = primaryStage;
 
         // Loads the object hierarchy from each FXML document

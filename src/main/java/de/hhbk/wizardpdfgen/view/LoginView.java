@@ -34,8 +34,9 @@ public class LoginView implements FxmlView<LoginViewModel> {
     @InjectViewModel
     LoginViewModel viewModel;
 
-    private MySqlUserAdministrationDAO mySqlUserAdministrationDAO;
-
+    /**
+     * Set bindings between noe properties and properties of its view model.
+     */
     public void initialize() {
         userNameTextfield.textProperty()
                 .bindBidirectional(viewModel.usernameProperty());
@@ -45,15 +46,11 @@ public class LoginView implements FxmlView<LoginViewModel> {
         loginButton.disableProperty()
                 .bind((Bindings.isEmpty(viewModel.usernameProperty())
                         .or(Bindings.isEmpty(viewModel.passwordProperty()))));
-
     }
 
-
     /**
-     * Eingaben werden mit den Inhalten der DB auf Korrekheit geprüft
-     * Je nach Benutzer öffnet sich eine andere Maske (Lehrer, Gast, Admin)
-     *
-     * @param mouseEvent
+     * Calls login funtion: {@link LoginViewModel#logIn()}
+     * @param mouseEvent event, which triggered action
      */
     public void loginButtonEvent(MouseEvent mouseEvent) throws IOException {
         viewModel.logIn();

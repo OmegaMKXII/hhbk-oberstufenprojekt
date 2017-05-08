@@ -1,8 +1,7 @@
 package de.hhbk.wizardpdfgen.view;
 
 import de.hhbk.wizardpdfgen.main.Main;
-import de.hhbk.wizardpdfgen.model.enums.AuthorisationLevel;
-import de.hhbk.wizardpdfgen.viewmodel.LoginViewModel;
+import de.hhbk.wizardpdfgen.model.persistence.sql.DidacticWizardDAO;
 import de.hhbk.wizardpdfgen.viewmodel.MainWindowViewModel;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
@@ -10,95 +9,94 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by monikaschepan on 02.05.17.
  */
-public class MainWindowView implements FxmlView<MainWindowViewModel>{
-
-
-    @FXML
-    Label ausbildungsjahrLabel;
+public class MainWindowView implements FxmlView<MainWindowViewModel> {
 
     @FXML
-    Label ausbildungsberufLabel;
+    Label guideLabel;
 
     @FXML
-    Button templateGenerierenButton;
+    Label trainingYearLabel;
 
     @FXML
-    Button benutzerverwaltungButton;
+    Label skilledOccupationLabel;
 
     @FXML
-    Button templateLoeschenButton;
+    Button userAdminButton;
 
     @FXML
-    Button pdfGenerierenButton;
+    Button generateTemplateButton;
+
+    @FXML
+    Button deleteTemplateButton;
+
+    @FXML
+    Button generatePDFButton;
 
     @FXML
     ListView listviewMainWIndow;
 
     @FXML
-    ComboBox<String> ausbidungsberufComboBox;
+    ComboBox<String> skilledOccupationComboBox;
 
     @FXML
-    ComboBox<Integer> ausbildungsjahrComboBox;
+    ComboBox<Integer> trainingYearComboBox;
 
     @InjectViewModel
     MainWindowViewModel viewModel;
 
+    private static Logger logger = LogManager.getLogger(MainWindowView.class);
+
     @FXML
     public void initialize() {
-        pdfGenerierenButton.setVisible(false);
-        AuthorisationLevel status = LoginViewModel.currentUser.getRole();
-        switch (status)
-        {
-            case TEACHER:
-                benutzerverwaltungButton.setVisible(false);
-                templateLoeschenButton.setVisible(true);
-                templateGenerierenButton.setVisible(true);
-                pdfGenerierenButton.setVisible(true);
-                break;
 
-            case GUEST:
-                benutzerverwaltungButton.setVisible(false);
-                templateGenerierenButton.setVisible(false);
-                templateLoeschenButton.setVisible(false);
-                pdfGenerierenButton.setVisible(true);
-                break;
+        viewModel.initialize();
 
-            case ADMIN:
-                benutzerverwaltungButton.setVisible(true);
-                templateGenerierenButton.setVisible(true);
-                templateLoeschenButton.setVisible(true);
-                pdfGenerierenButton.setVisible(true);
-                break;
-            default:
-                break;
-        }
+        this.skilledOccupationComboBox.setItems(viewModel.getSkilledOccupationList());
+        this.trainingYearComboBox.setItems(viewModel.getTrainingYearList());
+        this.guideLabel.textProperty()
+                .bindBidirectional(viewModel.guideTextProperty());
 
-        ausbidungsberufComboBox.getItems().setAll("Fachinformatiker");
-        ausbildungsjahrComboBox.getItems().setAll(1,2,3);
-        ausbidungsberufComboBox.setPromptText("Bitte auswählen");
-        ausbildungsjahrComboBox.setPromptText("Bitte auswählen");
+        this.userAdminButton.visibleProperty().bind(viewModel.userAdminButtonVisibilityProperty());
+        this.deleteTemplateButton.visibleProperty().bind(viewModel.deleteTemplateButtonVisibilityProperty());
+        this.generateTemplateButton.visibleProperty().bind(viewModel.generateTemplateButtonVisibilityProperty());
+        this.generatePDFButton.visibleProperty().bind(viewModel.generatePDFButtonVisibilityProperty());
+
+        this.generatePDFButton.disableProperty().bind(viewModel.generatePDFButtonEnabledProperty());
+
+       // TODO Delete
+        trainingYearComboBox.getItems().setAll(1, 2, 3);
+
     }
 
+
     /**
-     * Event für die ComboBox für den Ausbildungsberuf
-     * @param actionEvent
+     *  This method is triggerd by selecting one of the displayed skilled occupation.
+     *  It will call a funtion of the underlying its viewModel: {@link MainWindowViewModel#updateTrainingYearBySkilledOccupation()}
+     * @param actionEvent triggered event
      */
-    public void ausbidungsberufComboBoxEvent(ActionEvent actionEvent) {
+    public void skilledOccupationComboBoxEvent(ActionEvent actionEvent) {
+        viewModel.updateTrainingYearBySkilledOccupation();
     }
 
     /**
      * Event für die ComboBox für das Ausbildungsjahr
+     *
      * @param actionEvent
      */
     public void ausbidungsjahrComboBoxEvent(ActionEvent actionEvent) {
+        this.generatePDFButton.disableProperty().bind(viewModel.generatePDFButtonEnabledProperty());
     }
 
     /**
-     *
      * @param mouseEvent
      */
     public void pdfGenerierenButtonEvent(MouseEvent mouseEvent) {
@@ -106,16 +104,14 @@ public class MainWindowView implements FxmlView<MainWindowViewModel>{
     }
 
     /**
-     *
      * @param mouseEvent
      */
     public void templateGenerierenButtonEvent(MouseEvent mouseEvent) {
-       // System.out.print(LoginViewModel.currentUser.getUser());
+        // System.out.print(LoginViewModel.currentUser.getUser());
         Main.switchToTemplate();
     }
 
     /**
-     *
      * @param mouseEvent
      */
     public void templateLoeschenButtonEvent(MouseEvent mouseEvent) {
@@ -125,6 +121,7 @@ public class MainWindowView implements FxmlView<MainWindowViewModel>{
 
     /**
      * a
+     *
      * @param mouseEvent
      */
     public void benutzerverwaltungButtonEvent(MouseEvent mouseEvent) {

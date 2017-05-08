@@ -45,8 +45,6 @@ public class UserAdminView implements FxmlView<UserAdminViewModel> {
     @InjectViewModel
     UserAdminViewModel viewModel;
 
-
-
     @FXML
     public void initialize() {
         usernameTextfield.textProperty()
@@ -59,13 +57,11 @@ public class UserAdminView implements FxmlView<UserAdminViewModel> {
         viewModel.setListView(this.listviewUser);
 
         viewModel.initialize();
-
     }
 
     public void benutzerLoeschenButtonEvent(MouseEvent mouseEvent) {
         this.viewModel.deleteUser();
     }
-
 
     public void benutzerHinzufuegenButtonEvent(MouseEvent mouseEvent) {
         viewModel.addUser();

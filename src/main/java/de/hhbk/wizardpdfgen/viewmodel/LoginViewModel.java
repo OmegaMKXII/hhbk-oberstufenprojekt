@@ -3,12 +3,16 @@ package de.hhbk.wizardpdfgen.viewmodel;
 import de.hhbk.wizardpdfgen.main.Main;
 import de.hhbk.wizardpdfgen.model.base.User;
 import de.hhbk.wizardpdfgen.model.enums.AuthorisationLevel;
+import de.hhbk.wizardpdfgen.model.enums.DBType;
+import de.hhbk.wizardpdfgen.model.persistence.sql.MySqlDAOFactory;
 import de.hhbk.wizardpdfgen.model.persistence.sql.MySqlUserAdministrationDAO;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 import de.saxsys.mvvmfx.ViewModel;
 import javafx.scene.control.Alert;
+
+import java.sql.SQLException;
 
 /**
  * Created by user on 03.05.2017.
@@ -22,6 +26,10 @@ public class LoginViewModel implements ViewModel {
 
     private MySqlUserAdministrationDAO adminDAO = new MySqlUserAdministrationDAO();
 
+    public void initialize(){
+        // TODO interfaces
+       // MySqlUserAdministrationDAO adminDAO = MySqlDAOFactory.createUserAdminDAO(DBType.MYSQL_DB);
+    }
 
     /**
      * Logs in user
@@ -29,7 +37,12 @@ public class LoginViewModel implements ViewModel {
     public void logIn() {
         // Find user, whih matches to given username and password - the combination of username and password is unique
 
-        User usr = adminDAO.selectPasswordByUser(getUsername(),getPassword());
+        User usr = null;
+        try {
+            usr = adminDAO.getUser(getUsername(),getPassword());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         if(usr != null) {
             String password = usr.getPassword();
             String username = usr.getUsername();
