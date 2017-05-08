@@ -1,0 +1,52 @@
+<tbody><tr><td colspan="4"><strong>Fach: </strong>Wirtschafts- und Geschäftsprozesse</td></tr>
+    
+    <tr><td colspan="4"><strong>Lernfeld 1: </strong>Betrieb und sein Umfeld (LF1a) / Recht und Wirtschaft (LF1b)</td></tr>    
+   
+    
+    <tr><td colspan="4"><strong>Anforderungssituation : </strong>ohne Bezug</td></tr>
+    <tr>
+        <td><strong>Lernsituation 1: </strong> (1a) Erarbeitung von Grundlagen wirtschaftlichen Handelns und Denkens anhand von Fallsituationen</td>
+        <td width="110" align="middle"><strong>Dauer:</strong> 6 UStd</td>
+        <td width="80" align="center">ID: 1</td>
+        <td width="40" style="background-color:white;text-align: center">-1</td>
+    </tr>
+
+    <tr><td colspan="4" width="360" valign="top"><strong>Einstiegsszenario:</strong><br> <p>Die Privatisierung des Staatsbetriebes Deutsche Bundespost ist mit den Börsengängen der Deutsche Telekom AG, der Deutsche Post AG und zuletzt der Postbank AG abgeschlossen. Ziele und Aufgaben öffentlicher und privater Unternehmen unterscheiden sich in erheblichem Maße. Dem Zwang zu wirtschaftlichem Handeln unterliegen sie jedoch ebenso wie die Privathaushalte. Deren Denk- und Handlungsweisen und die damit zusammenhängende roduktionsorganisation gilt es aufzuzeigen.</p>
+</td></tr>
+    <tr><td colspan="4" valign="top" width="360"><strong>Handlungsprodukt/Lernergebnis:</strong><br> <p>Vorstellen des eigenen Ausbildungsbetriebes</p>
+</td></tr>
+
+    <tr><td colspan="4" valign="top"><strong>Wesentliche Kompetenzen:</strong><br> 
+    <p>Aufgrund vorgegebener Problemstellungen anhand von Arbeitsunterlagen und Unterrichtsgesprächen:</p>
+
+<ul>
+ <li>Wirtschaftliche Handlungsweisen und Zielsetzungen der Wirtschaftssubjekte</li>
+ <li>Mögliche Konflikte zwischen wirtschaftlichen Zielsetzungen und knappen Ressourcen</li>
+ <li>Wichtige Begriffe der Wirtschaftswelt</li>
+ <li>volkswirtschaftliche und betriebswirtschaftliche Betrachtungsweisen und Belange</li>
+ <li>Kombinierter Einsatz der Produktionsfaktoren bei erstellen von Gütern und Dienstleistungen</li>
+ <li>Bestimmung und Bewertung des</li>
+ <li>wirtschaftlichen Erfolges</li>
+ <li>Möglichkeiten und Folgen arbeitsteiligen Wirtschaftens in betrieblicher und volkswirtschaftlicher Sicht</li>
+</ul>
+<br></td></tr>
+    <tr><td colspan="4" valign="top"><strong>Inhalte:</strong><br> <ul>
+ <li>Ziele und Aufgaben privater und öffentlicher Betriebe</li>
+ <li>Wirtschaftliches Handeln und ökonomisches Prinzip</li>
+ <li>Bedürfnisse, Bedarf, Nachfrage, Güter, Dienstleistungen etc.</li>
+ <li>Produktion, Produktionsfaktoren und Faktorkombination</li>
+ <li>Kennzahlen des ökonomischen Erfolges</li>
+ <li>Betriebliche und volkswirtschaftliche Arbeitsteilung, Wirtschaftssektoren, Kenngrößen der volkswirtschaftlichen Leistung</li>
+</ul>
+</td></tr>
+
+    <tr><td colspan="4"><strong>Unterrichtsmaterialien:</strong><br> </td></tr>
+    <tr><td colspan="4"><strong>Organisatorische Hinweise:</strong><br> </td></tr>
+
+    <tr><td colspan="4"><strong>Lern- und Arbeitstechniken:</strong><br> </td></tr>
+    <tr><td colspan="4"><strong>Leistungsnachweis:</strong><br> </td></tr>
+
+
+    <tr><td colspan="4" align="right"><span id="show" style="cursor:pointer;"><img src="http://localhost/dashboard/DidaktPlan//public/images/infos.png" style="vertical-align:middle"> Zusatzinfos </span></td></tr>
+
+</tbody>
