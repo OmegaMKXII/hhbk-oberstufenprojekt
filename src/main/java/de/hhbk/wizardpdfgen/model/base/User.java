@@ -1,68 +1,43 @@
 package de.hhbk.wizardpdfgen.model.base;
 
-import de.hhbk.wizardpdfgen.model.base.Template;
 import de.hhbk.wizardpdfgen.model.enums.AuthorisationLevel;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by user on 04.05.2017.
  */
 public class User {
-    public User(String user, String password) {
-        this.user = user;
-        this.password = password;
-    }
 
-    public User(String user, String password, String role, int id) {
-        this.user = user;
-        this.password = password;
-        this.role = role;
-        this.id = id;
-    }
+    private String username;
+    private String password;
+    private AuthorisationLevel role;
+    private int id; // TODO benötigt?
 
-    String user;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public User(int id) {
-
-        this.id = id;
-    }
-
-    public User(String user, String password, String role) {
-        this.user = user;
+    public User(String username, String password, AuthorisationLevel role) {
+        this.username = username;
         this.password = password;
         this.role = role;
-
     }
 
-    String password;
-    String role;
-    int id;
+    public User(String username, String password, AuthorisationLevel role, int id) {
+        this(username, password, role);
+        this.id = id;
+    }
 
-
-
-    public String getRole() {
+    public AuthorisationLevel getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(AuthorisationLevel role) {
         this.role = role;
     }
-    public String getUser() {
-        return user;
+
+    public String getUsername() {
+        return username;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUser(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -75,6 +50,6 @@ public class User {
 
     @Override
     public String toString() {
-        return "Benutzer: " + user + "-" + "Passwort: " + password;
+        return "Benutzer: " + username + "-" + "Passwort: " + password;
     }
 }

@@ -5,9 +5,9 @@ package de.hhbk.wizardpdfgen.model.enums;
  */
 public enum AuthorisationLevel {
 
-    GUEST("Gast"),
-    ADMIN("Admin"),
-    TEACHER("Lehrer");
+    GUEST("GUEST"),
+    ADMIN("ADMIN"),
+    TEACHER("TEACHER");
 
     private final String level;
 
@@ -20,4 +20,6 @@ public enum AuthorisationLevel {
     public String toString() {
         return level;
     }
+
+
 }

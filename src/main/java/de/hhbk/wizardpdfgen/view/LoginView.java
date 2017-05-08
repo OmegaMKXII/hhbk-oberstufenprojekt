@@ -1,28 +1,22 @@
 package de.hhbk.wizardpdfgen.view;
 
-import de.hhbk.wizardpdfgen.main.Main;
-import de.hhbk.wizardpdfgen.model.base.User;
-import de.hhbk.wizardpdfgen.model.enums.AuthorisationLevel;
 import de.hhbk.wizardpdfgen.model.persistence.sql.MySqlUserAdministrationDAO;
 import de.hhbk.wizardpdfgen.viewmodel.LoginViewModel;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.beans.binding.Bindings;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
-import java.net.URL;
-import java.text.BreakIterator;
-import java.util.List;
-import java.util.ResourceBundle;
 
-public class LoginView implements FxmlView<LoginViewModel>, Initializable {
+public class LoginView implements FxmlView<LoginViewModel> {
 
     @FXML
     Label loginLabel;
@@ -40,10 +34,9 @@ public class LoginView implements FxmlView<LoginViewModel>, Initializable {
     @InjectViewModel
     LoginViewModel viewModel;
 
+    private MySqlUserAdministrationDAO mySqlUserAdministrationDAO;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
+    public void initialize() {
         userNameTextfield.textProperty()
                 .bindBidirectional(viewModel.usernameProperty());
         passwordTextfield.textProperty()
@@ -52,18 +45,9 @@ public class LoginView implements FxmlView<LoginViewModel>, Initializable {
         loginButton.disableProperty()
                 .bind((Bindings.isEmpty(viewModel.usernameProperty())
                         .or(Bindings.isEmpty(viewModel.passwordProperty()))));
-    }
-
-    String role;
-
-    Integer id;
-
-    MySqlUserAdministrationDAO mySqlUserAdministrationDAO;
-
-    @FXML
-    public void initialize() {
 
     }
+
 
     /**
      * Eingaben werden mit den Inhalten der DB auf Korrekheit geprüft
@@ -72,43 +56,11 @@ public class LoginView implements FxmlView<LoginViewModel>, Initializable {
      * @param mouseEvent
      */
     public void loginButtonEvent(MouseEvent mouseEvent) throws IOException {
-
-
-        List<User> userList = MySqlUserAdministrationDAO.selectPasswordByUser(userNameTextfield.getText());
-        for (User u : userList) {
-            String password = u.getPassword();
-            String user = u.getUser();
-
-
-
-
-            if (passwordTextfield.getText().equals(password) && userNameTextfield.getText().equals(user)) {
-
-                role = u.getRole();
-                Main.switchToMain();
-            } else {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Das Kennwort oder das Passwort ist falsch");
-                alert.showAndWait();
-
-            }
-        }
+        viewModel.logIn();
     }
 
-    public static String getStatus() {
 
-        String role = AuthorisationLevel.ADMIN.toString();
-        return role;
-    }
 
-    public  Integer getUserID() {
-
-        List<User> userList =  MySqlUserAdministrationDAO.selectUserID(userNameTextfield.getText());
-        for (User u: userList)
-        {
-            id = u.getId();
-        }
-        return id;
-    }
 
 
 }

@@ -3,6 +3,7 @@ package de.hhbk.wizardpdfgen.view;
 import de.hhbk.wizardpdfgen.model.base.Configuration;
 import de.hhbk.wizardpdfgen.model.persistence.sql.MySqlTemplateDAO;
 import de.hhbk.wizardpdfgen.viewmodel.LoginViewModel;
+import de.hhbk.wizardpdfgen.viewmodel.TemplateViewModel;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.collections.FXCollections;
@@ -17,7 +18,7 @@ import java.util.List;
 /**
  * Created by monikaschepan on 02.05.17.
  */
-public class TemplateView implements FxmlView<LoginViewModel> {
+public class TemplateView implements FxmlView<TemplateViewModel> {
 
     @FXML
     ListView listviewTemplate;
@@ -35,7 +36,7 @@ public class TemplateView implements FxmlView<LoginViewModel> {
     Label templateNameLabel;
 
     @InjectViewModel
-            LoginViewModel viewModel;
+    TemplateViewModel viewModel;
 
     MySqlTemplateDAO mySqlTemplateDAO;
 

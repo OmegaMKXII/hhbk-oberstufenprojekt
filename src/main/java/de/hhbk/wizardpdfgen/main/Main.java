@@ -5,6 +5,9 @@ import de.hhbk.wizardpdfgen.view.MainWindowView;
 import de.hhbk.wizardpdfgen.view.TemplateView;
 import de.hhbk.wizardpdfgen.view.UserAdminView;
 import de.hhbk.wizardpdfgen.viewmodel.LoginViewModel;
+import de.hhbk.wizardpdfgen.viewmodel.MainWindowViewModel;
+import de.hhbk.wizardpdfgen.viewmodel.TemplateViewModel;
+import de.hhbk.wizardpdfgen.viewmodel.UserAdminViewModel;
 import de.saxsys.mvvmfx.FluentViewLoader;
 import de.saxsys.mvvmfx.ViewTuple;
 import javafx.application.Application;
@@ -30,19 +33,17 @@ public class Main extends Application {
         final ViewTuple<LoginView, LoginViewModel> viewTupleLogin = FluentViewLoader.fxmlView(LoginView.class).load();
         final Parent loginWindow = viewTupleLogin.getView();
 
-        final ViewTuple<MainWindowView, LoginViewModel> viewTupleMain = FluentViewLoader.fxmlView(MainWindowView.class).load();
-        final Parent mainWindow = viewTupleMain.getView();
+       // final ViewTuple<MainWindowView, MainWindowViewModel> viewTupleMain = FluentViewLoader.fxmlView(MainWindowView.class).load();
+        //final Parent mainWindow = viewTupleMain.getView();
 
-        final ViewTuple<TemplateView, LoginViewModel> viewTupleTemplate = FluentViewLoader.fxmlView(TemplateView.class).load();
+        final ViewTuple<TemplateView, TemplateViewModel> viewTupleTemplate = FluentViewLoader.fxmlView(TemplateView.class).load();
         final Parent templateWindow = viewTupleTemplate.getView();
 
-        final ViewTuple<UserAdminView, LoginViewModel> viewTupleUserAdmin = FluentViewLoader.fxmlView(UserAdminView.class).load();
-        final Parent userAdminWindow = viewTupleUserAdmin.getView();
+        //final ViewTuple<UserAdminView, UserAdminViewModel> viewTupleUserAdmin = FluentViewLoader.fxmlView(UserAdminView.class).load();
+        //final Parent userAdminWindow = viewTupleUserAdmin.getView();
 
         loginScene = new Scene(loginWindow);
-        mainScene = new Scene(mainWindow);
         templateScene = new Scene(templateWindow);
-        userAdminScene = new Scene(userAdminWindow);
 
         primaryStage.setScene(loginScene);
         primaryStage.setTitle("Login");
@@ -51,6 +52,9 @@ public class Main extends Application {
     }
 
     public static void switchToMain() {
+        final ViewTuple<MainWindowView, MainWindowViewModel> viewTupleMain = FluentViewLoader.fxmlView(MainWindowView.class).load();
+        final Parent mainWindow = viewTupleMain.getView();
+        mainScene = new Scene(mainWindow);
         stage.setScene(mainScene);
         stage.setTitle("PDF-Generator");
     }
@@ -60,8 +64,10 @@ public class Main extends Application {
         stage.setTitle("Template");
     }
 
-    public static void switchToBenutzer() {
-
+    public static void switchToUserAdmin() {
+        final ViewTuple<UserAdminView, UserAdminViewModel> viewTupleUserAdmin = FluentViewLoader.fxmlView(UserAdminView.class).load();
+        final Parent userAdminWindow = viewTupleUserAdmin.getView();
+        userAdminScene = new Scene(userAdminWindow);
         stage.setScene(userAdminScene);
         stage.setTitle("Benutzerverwaltung");
     }

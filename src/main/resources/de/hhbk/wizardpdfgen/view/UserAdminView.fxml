@@ -16,14 +16,14 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <ListView fx:id="listviewBenutzer" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.rowIndex="2" GridPane.rowSpan="5" />
-      <TextField fx:id="benutzerNameTextfield" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <Label fx:id="benutzerNameLabel" text="Benutzername" GridPane.rowIndex="2" />
-      <Button fx:id="benutzerLoeschenButton" mnemonicParsing="false" onMouseClicked="#benutzerLoeschenButtonEvent" text="Benutzer löschen" GridPane.columnIndex="5" GridPane.columnSpan="2" GridPane.rowIndex="10" />
-      <Label fx:id="benutzerPasswortLabel" text="Passwort" GridPane.rowIndex="4" />
-      <TextField fx:id="benutzerPasswortTextfield" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-      <Button fx:id="benutzerHinzufuegenButton" mnemonicParsing="false" onMouseClicked="#benutzerHinzufuegenButtonEvent" text="Benutzer hinzufügen" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="10" />
-      <Button fx:id="zurueckButton" mnemonicParsing="false" onMouseClicked="#zurueckButtonEvent" text="zurück" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+      <ListView fx:id="listviewUser" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.rowIndex="2" GridPane.rowSpan="5" />
+      <TextField fx:id="usernameTextfield" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Label fx:id="usernameLabel" text="Benutzername" GridPane.rowIndex="2" />
+      <Button fx:id="deleteUserButton" mnemonicParsing="false" onMouseClicked="#benutzerLoeschenButtonEvent" text="Benutzer löschen" GridPane.columnIndex="5" GridPane.columnSpan="2" GridPane.rowIndex="10" />
+      <Label fx:id="passwordLabel" text="Passwort" GridPane.rowIndex="4" />
+      <TextField fx:id="passwordTextfield" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <Button fx:id="addUserButton" mnemonicParsing="false" onMouseClicked="#benutzerHinzufuegenButtonEvent" text="Benutzer hinzufügen" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="10" />
+      <Button fx:id="exitButton" mnemonicParsing="false" onMouseClicked="#zurueckButtonEvent" text="zurück" GridPane.columnIndex="1" GridPane.rowIndex="10" />
    </children>
    <rowConstraints>
       <RowConstraints minHeight="10.0" prefHeight="30.0" />

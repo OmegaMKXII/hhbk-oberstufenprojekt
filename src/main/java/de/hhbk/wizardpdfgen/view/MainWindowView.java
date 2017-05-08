@@ -1,7 +1,9 @@
 package de.hhbk.wizardpdfgen.view;
 
 import de.hhbk.wizardpdfgen.main.Main;
+import de.hhbk.wizardpdfgen.model.enums.AuthorisationLevel;
 import de.hhbk.wizardpdfgen.viewmodel.LoginViewModel;
+import de.hhbk.wizardpdfgen.viewmodel.MainWindowViewModel;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.event.ActionEvent;
@@ -12,7 +14,7 @@ import javafx.scene.input.MouseEvent;
 /**
  * Created by monikaschepan on 02.05.17.
  */
-public class MainWindowView implements FxmlView<LoginViewModel>{
+public class MainWindowView implements FxmlView<MainWindowViewModel>{
 
 
     @FXML
@@ -43,35 +45,36 @@ public class MainWindowView implements FxmlView<LoginViewModel>{
     ComboBox<Integer> ausbildungsjahrComboBox;
 
     @InjectViewModel
-    LoginViewModel viewModel;
+    MainWindowViewModel viewModel;
 
     @FXML
     public void initialize() {
         pdfGenerierenButton.setVisible(false);
-        String status = viewModel.currentUser.getRole();
+        AuthorisationLevel status = LoginViewModel.currentUser.getRole();
         switch (status)
         {
-            case "Lehrer":
+            case TEACHER:
                 benutzerverwaltungButton.setVisible(false);
                 templateLoeschenButton.setVisible(true);
                 templateGenerierenButton.setVisible(true);
                 pdfGenerierenButton.setVisible(true);
                 break;
 
-            case "Gast":
+            case GUEST:
                 benutzerverwaltungButton.setVisible(false);
                 templateGenerierenButton.setVisible(false);
                 templateLoeschenButton.setVisible(false);
                 pdfGenerierenButton.setVisible(true);
                 break;
 
-            case "Admin":
+            case ADMIN:
                 benutzerverwaltungButton.setVisible(true);
                 templateGenerierenButton.setVisible(true);
                 templateLoeschenButton.setVisible(true);
                 pdfGenerierenButton.setVisible(true);
                 break;
-
+            default:
+                break;
         }
 
         ausbidungsberufComboBox.getItems().setAll("Fachinformatiker");
@@ -107,7 +110,7 @@ public class MainWindowView implements FxmlView<LoginViewModel>{
      * @param mouseEvent
      */
     public void templateGenerierenButtonEvent(MouseEvent mouseEvent) {
-        System.out.print(viewModel.getUsername());
+       // System.out.print(LoginViewModel.currentUser.getUser());
         Main.switchToTemplate();
     }
 
@@ -116,7 +119,6 @@ public class MainWindowView implements FxmlView<LoginViewModel>{
      * @param mouseEvent
      */
     public void templateLoeschenButtonEvent(MouseEvent mouseEvent) {
-
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Möchten Sie das Template wirklich löschen?");
         alert.showAndWait();
     }
@@ -126,7 +128,6 @@ public class MainWindowView implements FxmlView<LoginViewModel>{
      * @param mouseEvent
      */
     public void benutzerverwaltungButtonEvent(MouseEvent mouseEvent) {
-        Main.switchToBenutzer();
-
+        Main.switchToUserAdmin();
     }
 }

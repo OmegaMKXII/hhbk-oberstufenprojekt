@@ -1,115 +1,79 @@
 package de.hhbk.wizardpdfgen.view;
 
+import de.hhbk.wizardpdfgen.main.Main;
 import de.hhbk.wizardpdfgen.model.base.User;
+import de.hhbk.wizardpdfgen.model.enums.AuthorisationLevel;
 import de.hhbk.wizardpdfgen.model.persistence.sql.MySqlUserAdministrationDAO;
-import de.hhbk.wizardpdfgen.viewmodel.LoginViewModel;
+import de.hhbk.wizardpdfgen.viewmodel.UserAdminViewModel;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import de.hhbk.wizardpdfgen.main.Main;
-
-import java.util.List;
 
 /**
  * Created by monikaschepan on 02.05.17.
  */
-public class UserAdminView implements FxmlView<LoginViewModel> {
+public class UserAdminView implements FxmlView<UserAdminViewModel> {
     @FXML
-    ListView listviewBenutzer;
+    ListView listviewUser;
 
     @FXML
-    Button benutzerHinzufuegenButton;
+    Button addUserButton;
 
     @FXML
-    Button benutzerLoeschenButton;
+    Button deleteUserButton;
 
     @FXML
-    Button zurueckButton;
+    Button exitButton;
 
     @FXML
-    TextField benutzerNameTextfield;
+    TextField usernameTextfield;
 
     @FXML
-    TextField benutzerPasswortTextfield;
+    TextField passwordTextfield;
 
     @FXML
-    Label benutzerNameLabel;
+    Label usernameLabel;
 
     @FXML
-    Label benutzerPasswortLabel;
+    Label passwordLabel;
 
     @FXML
     Label BenutzerVerwaltungLabel;
 
     @InjectViewModel
-    LoginViewModel viewModel;
-
-    MySqlUserAdministrationDAO mySqlUserAdministrationDAO;
+    UserAdminViewModel viewModel;
 
 
-    ObservableList<User> userObservableList  = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
-        List<User> userList = MySqlUserAdministrationDAO.selectAllUser();
+        usernameTextfield.textProperty()
+                .bindBidirectional(viewModel.usernameProperty());
+        passwordTextfield.textProperty()
+                .bindBidirectional(viewModel.passwordProperty());
 
-        for (User u :userList)
-        {
-            userObservableList.add(new User(u.getUser(),u.getPassword()));
+        listviewUser.setItems(viewModel.getUserObservableList());
 
-        }
+        viewModel.setListView(this.listviewUser);
 
-        listviewBenutzer.setItems(userObservableList);
+        viewModel.initialize();
 
     }
 
-
     public void benutzerLoeschenButtonEvent(MouseEvent mouseEvent) {
-
-        User user = (User)listviewBenutzer.getSelectionModel().getSelectedItem();
-
-
-        boolean gelöscht = MySqlUserAdministrationDAO.deleteUser(user.getUser(),user.getPassword());
-
-        if(gelöscht)
-        {
-            userObservableList.remove(listviewBenutzer.getSelectionModel().getSelectedItem());
-            listviewBenutzer.refresh();
-        }
-
+        this.viewModel.deleteUser();
     }
 
 
     public void benutzerHinzufuegenButtonEvent(MouseEvent mouseEvent) {
-
-
-        String user =  benutzerNameTextfield.getText();
-        String password = benutzerPasswortTextfield.getText();
-
-        if(user.isEmpty() || password.isEmpty())
-        {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Bitte geben Sie etwas in die Felder ein!");
-            alert.showAndWait();
-        }
-        User u = new User(user,password);
-        boolean hinzugefügt =   mySqlUserAdministrationDAO.insertUser(u);
-
-        if(hinzugefügt)
-        {
-            benutzerNameTextfield.setText("");
-            benutzerPasswortTextfield.setText("");
-        }
-        userObservableList.add(new User(user,password));
-
-        listviewBenutzer.refresh();
+        viewModel.addUser();
     }
 
     public void zurueckButtonEvent(MouseEvent mouseEvent) {
         Main.switchToMain();
     }
+
 
 }
