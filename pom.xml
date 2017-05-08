@@ -36,18 +36,19 @@
             <version>5.5.11</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.itextpdf.tool/xmlworker -->
-        <dependency>
-            <groupId>com.itextpdf.tool</groupId>
-            <artifactId>xmlworker</artifactId>
-            <version>5.5.11</version>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/net.sf.jtidy/jtidy -->
         <dependency>
             <groupId>net.sf.jtidy</groupId>
             <artifactId>jtidy</artifactId>
             <version>r938</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.xhtmlrenderer/flying-saucer-pdf -->
+        <dependency>
+            <groupId>org.xhtmlrenderer</groupId>
+            <artifactId>flying-saucer-pdf</artifactId>
+            <version>9.1.5</version>
+        </dependency>
+
     </dependencies>
 </project>

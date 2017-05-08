@@ -1,11 +1,7 @@
 <html>
 <head>
     <link type="text/css" rel="stylesheet" href="src/main/resources/de/hhbk/wizardpdfgen/generator/foo.css"/>
-    <style>
-        body {
-            background-color: #0a6aa1;
-        }
-    </style>
+    <link type="text/css" rel="stylesheet" href="src/main/resources/de/hhbk/wizardpdfgen/generator/visualize.css"/>
 </head>
 <body>
 <h3>Detailanzeige</h3>
@@ -22,7 +18,7 @@
     <tr><td colspan="4"><strong>Lernfeld {{lfid}}: </strong>{{{description}}}</td></tr>
     {{#lernsituations}}
     <tr><td colspan="4"><strong>Anforderungssituation : </strong>ohne Bezug</td></tr>
-    <tr>
+    <tr class="none">
         <td><strong>Lernsituation {{lsnr}}: </strong>{{name}}</td>
         <td width="110" align="middle"><strong>Dauer:</strong> {{ustunden}} UStd</td>
         <td width="80" align="center">ID: {{lsid}}</td>
@@ -30,16 +26,17 @@
     </tr>
 
     <tr><td colspan="4" width="360" valign="top"><strong>Einstiegsszenario:</strong><br/>{{{szenario}}}</td></tr>
-    <tr><td colspan="4" valign="top" width="360"><strong>Handlungsprodukt/Lernergebnis:</strong><br/>{{{handlungsprodukt}}}</td></tr>
+    <tr display="{{displayhandlungsprodukt}}"><td colspan="4" valign="top" width="360"><strong>Handlungsprodukt/Lernergebnis:</strong><br/>{{{handlungsprodukt}}}</td></tr>
 
-    <tr><td colspan="4" valign="top"><strong>Wesentliche Kompetenzen:</strong><br/>{{{kompentenzen}}}</td></tr>
-    <tr><td colspan="4" valign="top"><strong>Inhalte:</strong><br/>{{{inhalte}}}</td></tr>
+    <tr display="{{displaykompentenzen}}"><td colspan="4" valign="top"><strong>Wesentliche Kompetenzen:</strong><br/>{{{kompentenzen}}}</td></tr>
+    <tr display="{{displayinhalte}}"><td colspan="4" valign="top"><strong>Inhalte:</strong><br/>{{{inhalte}}}</td></tr>
 
-    <tr><td colspan="4"><strong>Unterrichtsmaterialien:</strong><br/>{{{umaterial}}}</td></tr>
-    <tr><td colspan="4"><strong>Organisatorische Hinweise:</strong><br/>{{{organiation}}}</td></tr>
+    <tr display="{{displayumaterial}}"><td colspan="4"><strong>Unterrichtsmaterialien:</strong><br/>{{{umaterial}}}</td></tr>
+    <tr display="{{displayorganiation}}"><td colspan="4"><strong>Organisatorische Hinweise:</strong><br/>{{{organiation}}}</td></tr>
 
-    <tr><td colspan="4"><strong>Lern- und Arbeitstechniken:</strong><br/>{{{arbeitstechniken}}}</td></tr>
-    <tr><td colspan="4"><strong>Leistungsnachweis:</strong><br/> </td></tr>
+    <tr display="{{displayarbeitstechniken}}"><td colspan="4"><strong>Lern- und Arbeitstechniken:</strong><br/>{{{arbeitstechniken}}}</td></tr>
+    //TODO Nachweise
+    <tr display="{{displaynachweis}}"><td colspan="4"><strong>Leistungsnachweis: {{nachweise}}</strong><br/> </td></tr>
     {{/lernsituations}}
     {{/lernfelds}}
     {{/fachs}}

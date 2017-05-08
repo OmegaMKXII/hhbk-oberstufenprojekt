@@ -9,16 +9,20 @@ import java.util.List;
  * Created by x1n4u on 5/8/17.
  */
 public class Fach {
+    ResultSet set;
+
     Integer fid;
     String description;
     List<Lernfeld> lernfelds;
+
     public Fach(ResultSet set) throws SQLException {
+        this.set = set;
         this.fid = set.getInt("f.fid");
         this.description = set.getString("f.bezeichnung");
         this.lernfelds = new ArrayList<>();
     }
 
-    public boolean next(ResultSet set) throws SQLException {
+    public boolean next() throws SQLException {
         return set.next() && set.getInt("f.fid") == fid;
     }
 
