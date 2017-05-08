@@ -14,13 +14,14 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
-    <!-- https://mvnrepository.com/artifact/de.saxsys/mvvmfx -->
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/de.saxsys/mvvmfx -->
         <dependency>
             <groupId>de.saxsys</groupId>
             <artifactId>mvvmfx</artifactId>
             <version>1.6.0</version>
         </dependency>
+
         <!-- https://mvnrepository.com/artifact/com.github.spullara.mustache.java/compiler -->
         <dependency>
             <groupId>com.github.spullara.mustache.java</groupId>
@@ -28,5 +29,25 @@
             <version>0.9.4</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.itextpdf/itextpdf -->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.5.11</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.itextpdf.tool/xmlworker -->
+        <dependency>
+            <groupId>com.itextpdf.tool</groupId>
+            <artifactId>xmlworker</artifactId>
+            <version>5.5.11</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/net.sf.jtidy/jtidy -->
+        <dependency>
+            <groupId>net.sf.jtidy</groupId>
+            <artifactId>jtidy</artifactId>
+            <version>r938</version>
+        </dependency>
     </dependencies>
 </project>

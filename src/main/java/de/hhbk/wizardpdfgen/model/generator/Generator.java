@@ -3,9 +3,15 @@ package de.hhbk.wizardpdfgen.model.generator;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.tool.xml.XMLWorker;
+import com.itextpdf.tool.xml.XMLWorkerHelper;
+import org.w3c.tidy.Tidy;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.nio.ByteBuffer;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,10 +30,30 @@ public class Generator {
         }
     }
 
-    public void generateDocument() throws IOException {
+    public Reader generateDocument() throws IOException {
         MustacheFactory mf = new DefaultMustacheFactory();
         Mustache mustache = mf.compile("src/main/resources/de/hhbk/wizardpdfgen/generator/report.mustache");
-        mustache.execute(new PrintWriter("foo.html", "UTF-8"), this).flush();
+
+        StringWriter out = new StringWriter();
+        StringWriter out2 = new StringWriter();
+        mustache.execute(out, this).flush();
+
+        Tidy tidy = new Tidy();
+        tidy.setXHTML(true);
+        tidy.parse(new StringReader(out.toString()), out2);
+
+        (new FileWriter("foo.html")).write(out2.toString());
+
+        return new StringReader(out2.toString());
+    }
+
+    public void toPDF(File file) throws IOException, DocumentException {
+        Document document = new Document();
+        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
+        document.open();
+        XMLWorkerHelper.getInstance().parseXHtml(writer, document,
+                this.generateDocument());
+        document.close();
     }
 
     static class Fach {
@@ -90,7 +116,7 @@ public class Generator {
         Generator g = new Generator(set);
         con.close();
         set.close();
-        g.generateDocument();
+        g.toPDF(new File("foo.pdf"));
     }
 }
 
