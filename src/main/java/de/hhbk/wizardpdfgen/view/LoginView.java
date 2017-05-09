@@ -34,8 +34,7 @@ public class LoginView implements FxmlView<LoginViewModel> {
     @InjectViewModel
     LoginViewModel viewModel;
 
-    private MySqlUserAdministrationDAO mySqlUserAdministrationDAO;
-
+    @FXML
     public void initialize() {
         userNameTextfield.textProperty()
                 .bindBidirectional(viewModel.usernameProperty());

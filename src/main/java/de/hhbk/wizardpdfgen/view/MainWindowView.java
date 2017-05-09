@@ -1,7 +1,11 @@
 package de.hhbk.wizardpdfgen.view;
 
 import de.hhbk.wizardpdfgen.main.Main;
+import de.hhbk.wizardpdfgen.model.base.Ausbildung;
+import de.hhbk.wizardpdfgen.model.base.User;
 import de.hhbk.wizardpdfgen.model.enums.AuthorisationLevel;
+import de.hhbk.wizardpdfgen.model.persistence.sql.MySqlAusbildungDAO;
+import de.hhbk.wizardpdfgen.model.persistence.sql.MySqlUserAdministrationDAO;
 import de.hhbk.wizardpdfgen.viewmodel.LoginViewModel;
 import de.hhbk.wizardpdfgen.viewmodel.MainWindowViewModel;
 import de.saxsys.mvvmfx.FxmlView;
@@ -10,6 +14,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+
+import java.util.List;
 
 /**
  * Created by monikaschepan on 02.05.17.
@@ -77,7 +83,13 @@ public class MainWindowView implements FxmlView<MainWindowViewModel>{
                 break;
         }
 
-        ausbidungsberufComboBox.getItems().setAll("Fachinformatiker");
+        List<Ausbildung> ausbildungList = MySqlAusbildungDAO.selectAusbildungsberuf();
+        for (Ausbildung a :ausbildungList)
+        {
+            ausbidungsberufComboBox.getItems().setAll(a.getAusbildungsberuf());
+        }
+
+     //   ausbidungsberufComboBox.getItems().setAll("Fachinformatiker");
         ausbildungsjahrComboBox.getItems().setAll(1,2,3);
         ausbidungsberufComboBox.setPromptText("Bitte auswählen");
         ausbildungsjahrComboBox.setPromptText("Bitte auswählen");
