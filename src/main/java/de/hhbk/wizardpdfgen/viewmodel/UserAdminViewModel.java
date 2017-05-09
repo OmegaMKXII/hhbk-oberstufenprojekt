@@ -1,9 +1,10 @@
 package de.hhbk.wizardpdfgen.viewmodel;
 
-import de.hhbk.wizardpdfgen.main.Main;
 import de.hhbk.wizardpdfgen.model.base.User;
 import de.hhbk.wizardpdfgen.model.enums.AuthorisationLevel;
-import de.hhbk.wizardpdfgen.model.persistence.sql.MySqlUserAdministrationDAO;
+import de.hhbk.wizardpdfgen.model.enums.DBType;
+import de.hhbk.wizardpdfgen.model.persistence.interfaces.UserAdministrationDAO;
+import de.hhbk.wizardpdfgen.model.persistence.sql.DAOFactory;
 import de.hhbk.wizardpdfgen.view.UserAdminView;
 import de.saxsys.mvvmfx.ViewModel;
 import javafx.beans.property.SimpleStringProperty;
@@ -19,7 +20,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * Created by user on 08.05.2017.
+ * Author: Kenji Kokubo on 08.05.17<br>
+ * This class represents the data and functions of the user administration view.
  */
 public class UserAdminViewModel implements ViewModel {
 
@@ -30,59 +32,41 @@ public class UserAdminViewModel implements ViewModel {
 
     private ObservableList<User> userObservableList  = FXCollections.observableArrayList();
 
-    private MySqlUserAdministrationDAO mySqlUserAdministrationDAO;
+    private UserAdministrationDAO userAdministrationDAO;
 
     private static Logger logger = LogManager.getLogger(UserAdminView.class);
 
+    /**
+     * Retrieves data from database for view.
+     * @throws SQLException if an IO error occurs
+     */
+    public void initialize() throws SQLException {
 
-    public void initialize(){
+        this.userAdministrationDAO = DAOFactory.createUserAdminDAO(DBType.MYSQL_DB);
 
-        List<User> userList = null;
-        try {
-            userList = MySqlUserAdministrationDAO.getAllUser();
-        } catch (SQLException e) {
-            logger.info("Nutzer wird über Funktionsausfall informiert");
-            Alert alert = new Alert(Alert.AlertType.WARNING, "Es ist ein Fehler beim Datenbankzugriff aufgetreten");
-            alert.showAndWait();
-            alert.setTitle("Datenbankzugriff gescheitert");
-            alert.setContentText("Folge: Es können keine Nutzerdaten gesehen noch bearbeitet werden.");
-        }
-
-        for (User usr : userList)
-        {
-            userObservableList.add(new User(usr.getUsername(),usr.getPassword(),usr.getRole()));
-        }
+        List<User> userList = this.userAdministrationDAO.getAllUser();
+        this.userObservableList.addAll(userList);
     }
 
     /**
      * Deletes user depending on selected item in listView
+     * @throws SQLException if an IO error occurs
      */
-    public void deleteUser() {
+    public void deleteUser() throws SQLException {
 
         User user = (User)listviewUser.getSelectionModel().getSelectedItem();
-        boolean isDeleted = false;
-        try {
-            isDeleted = MySqlUserAdministrationDAO.deleteUser(user);
-        } catch (SQLException e) {
-            logger.info("Nutzer wird über Funktionsausfall informiert");
-            Alert alert = new Alert(Alert.AlertType.WARNING, "Es ist ein Fehler beim Datenbankzugriff aufgetreten");
-            alert.showAndWait();
-            alert.setTitle("Datenbankzugriff gescheitert");
-            alert.setContentText("Folge: Es können keine Nutzerdaten bearbeitet werden.");
-        }
+        boolean isDeleted = this.userAdministrationDAO.deleteUser(user);
 
         if(isDeleted)
         {
             userObservableList.remove(listviewUser.getSelectionModel().getSelectedItem());
-            listviewUser.refresh();
         }
     }
-
 
     /**
      * Adds user by reading Textfield's content for username and password
      */
-    public void addUser() {
+    public void addUser() throws SQLException {
 
         String username =  getUsername();
         String password = getPassword();
@@ -94,16 +78,7 @@ public class UserAdminViewModel implements ViewModel {
         }
 
         User usr = new User(username, password, AuthorisationLevel.TEACHER);
-        boolean isAdded = false;
-        try {
-            isAdded = MySqlUserAdministrationDAO.insertUser(usr);
-        } catch (SQLException e) {
-            logger.info("Nutzer wird über Funktionsausfall informiert");
-            Alert alert = new Alert(Alert.AlertType.WARNING, "Es ist ein Fehler beim Datenbankzugriff aufgetreten");
-            alert.showAndWait();
-            alert.setTitle("Datenbankzugriff gescheitert");
-            alert.setContentText("Folge: Es können keine Nutzerdaten bearbeitet werden.");
-        }
+        boolean isAdded = this.userAdministrationDAO.insertUser(usr);
 
         if(isAdded)
         {
@@ -114,14 +89,6 @@ public class UserAdminViewModel implements ViewModel {
         this.userObservableList.add(usr);
 
         listviewUser.refresh();
-    }
-
-
-    /**
-     * Returns to menu, if
-     */
-    public void returnToMainWindow() {
-        Main.switchToMain();
     }
 
     public String getUsername() {

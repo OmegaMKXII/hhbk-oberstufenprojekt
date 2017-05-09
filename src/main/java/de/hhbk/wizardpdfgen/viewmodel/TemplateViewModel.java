@@ -3,7 +3,8 @@ package de.hhbk.wizardpdfgen.viewmodel;
 import de.saxsys.mvvmfx.ViewModel;
 
 /**
- * Created by user on 08.05.2017.
+ * Author: Monika Schepan on 09.05.17<br>
+ * This class represents the data and functions of the template view.
  */
 public class TemplateViewModel implements ViewModel {
 }

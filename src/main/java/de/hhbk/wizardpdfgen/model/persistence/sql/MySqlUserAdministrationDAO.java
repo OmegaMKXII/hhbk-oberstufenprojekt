@@ -25,10 +25,10 @@ import java.util.List;
 public class MySqlUserAdministrationDAO implements UserAdministrationDAO {
 
 
-    private static final String GET_ALL_USER = "SELECT  USER.USER, USER.PASSWORD, AUTHORISATION.Role FROM USER inner join AUTHORISATION on FK_AuthorisationID = Authorisation.AuthorisationID";
-    private static final String GET_USER_BY_NAME_PASSWD = "SELECT USER.USER, USER.PASSWORD, Authorisation.Role FROM USER inner join Authorisation on FK_AuthorisationID = Authorisation.AuthorisationID WHERE USER.Password = ? and USER.USER = ?";
-    private static final String INSERT_USER = "Insert into User(UserID, User, Password, FK_AuthorizationID) VALUES (NULL,?,?,?) ";
-    private static final String DELETE_USER = "Delete from User where User.User = ? and User.password = ? ";
+    private static final String GET_ALL_USER = "SELECT  USER.USERNAME, USER.PASSWORD, AUTHORISATION.ROLE FROM USER INNER JOIN AUTHORISATION ON FK_AUTHORISATIONID = AUTHORISATION.AUTHORISATIONID";
+    private static final String GET_USER_BY_NAME_PASSWD = "SELECT USER.USERNAME, USER.PASSWORD, AUTHORISATION.ROLE FROM USER INNER JOIN AUTHORISATION ON FK_AUTHORISATIONID = AUTHORISATION.AUTHORISATIONID WHERE USER.PASSWORD = ? AND USER.USERNAME = ?";
+    private static final String INSERT_USER = "INSERT INTO USER(USERID, USERNAME, PASSWORD, FK_AUTHORIZATIONID) VALUES (NULL,?,?,?)";
+    private static final String DELETE_USER = "DELETE FROM USER WHERE USER.USERNAME = ? AND USER.PASSWORD = ?";
 
     private static Logger logger = LogManager.getLogger(MySqlUserAdministrationDAO.class);
 
@@ -56,7 +56,7 @@ public class MySqlUserAdministrationDAO implements UserAdministrationDAO {
                 String db_username = rs.getString(1);
                 String db_password = rs.getString(2);
                 String authLevelString = rs.getString(3);
-                AuthorisationLevel authLevel = AuthorisationLevel.valueOf(authLevelString);
+                AuthorisationLevel authLevel = AuthorisationLevel.valueOf(authLevelString.toUpperCase());
 
                 foundUser = new User(db_username, db_password, authLevel);
             }
@@ -84,7 +84,7 @@ public class MySqlUserAdministrationDAO implements UserAdministrationDAO {
      *
      * @return list of users; if there are no user entries, an empty list will be returned
      */
-    public static List<User> getAllUser() throws SQLException {
+    public List<User> getAllUser() throws SQLException {
 
         Connection conn = null;
         List<User> userListe = new ArrayList<User>();
@@ -97,7 +97,7 @@ public class MySqlUserAdministrationDAO implements UserAdministrationDAO {
                 String db_username = rs.getString(1);
                 String db_password = rs.getString(2);
                 String db_authLvl = rs.getString(3);
-                AuthorisationLevel authLevel = AuthorisationLevel.valueOf(db_authLvl);
+                AuthorisationLevel authLevel = AuthorisationLevel.valueOf(db_authLvl.toUpperCase());
 
                 userListe.add(new User(db_username, db_password, authLevel));
             }
@@ -126,7 +126,7 @@ public class MySqlUserAdministrationDAO implements UserAdministrationDAO {
      * @return true, if user has been deleted successfully; false otherwise
      * @throws SQLException if an IO error occurs
      */
-    public static boolean insertUser(User usr) throws SQLException {
+    public boolean insertUser(User usr) throws SQLException {
         Connection conn = null;
         try {
             conn = DBUtil.getConnection(DBType.MYSQL_DB);
@@ -164,7 +164,7 @@ public class MySqlUserAdministrationDAO implements UserAdministrationDAO {
      * @return true, if user has been deleted successfully; false otherwise
      * @throws SQLException if an IO error occurs
      */
-    public static boolean deleteUser(User usr) throws SQLException {
+    public boolean deleteUser(User usr) throws SQLException {
         Connection conn = null;
         try {
             conn = DBUtil.getConnection(DBType.MYSQL_DB);

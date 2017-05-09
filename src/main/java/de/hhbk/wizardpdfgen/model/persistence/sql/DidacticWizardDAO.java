@@ -13,13 +13,6 @@ import java.util.List;
  * Created by monikaschepan on 08.05.17.
  */
 public class DidacticWizardDAO {
-    /*
-    // MySQL
-    private static final String DRIVER_NAME = "com.mysql.jdbc.Driver";
-    private static final String DB_URL = "jdbc:mysql://localhost/didakt";
-    private static final String ID = "root";
-    private static final String PASS = "";
-*/
 
     private static Logger logger = LogManager.getLogger(DidacticWizardDAO.class);
 

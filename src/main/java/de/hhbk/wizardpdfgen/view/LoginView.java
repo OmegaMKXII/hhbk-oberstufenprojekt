@@ -13,6 +13,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
@@ -34,6 +36,8 @@ public class LoginView implements FxmlView<LoginViewModel> {
     @InjectViewModel
     LoginViewModel viewModel;
 
+    private static Logger logger = LogManager.getLogger(LoginView.class);
+
     /**
      * Set bindings between noe properties and properties of its view model.
      */
@@ -46,6 +50,8 @@ public class LoginView implements FxmlView<LoginViewModel> {
         loginButton.disableProperty()
                 .bind((Bindings.isEmpty(viewModel.usernameProperty())
                         .or(Bindings.isEmpty(viewModel.passwordProperty()))));
+
+        logger.info("LoginViewModel initialisiert");
     }
 
     /**

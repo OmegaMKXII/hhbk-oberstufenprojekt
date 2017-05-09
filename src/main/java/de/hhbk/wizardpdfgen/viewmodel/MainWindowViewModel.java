@@ -1,13 +1,9 @@
 package de.hhbk.wizardpdfgen.viewmodel;
 
-import de.hhbk.wizardpdfgen.main.Main;
-import de.hhbk.wizardpdfgen.model.base.User;
 import de.hhbk.wizardpdfgen.model.enums.AuthorisationLevel;
 import de.hhbk.wizardpdfgen.model.enums.DBType;
+import de.hhbk.wizardpdfgen.model.persistence.sql.DAOFactory;
 import de.hhbk.wizardpdfgen.model.persistence.sql.DidacticWizardDAO;
-import de.hhbk.wizardpdfgen.model.persistence.sql.MySqlDAOFactory;
-import de.hhbk.wizardpdfgen.model.persistence.sql.MySqlUserAdministrationDAO;
-import de.hhbk.wizardpdfgen.view.LoginView;
 import de.hhbk.wizardpdfgen.view.MainWindowView;
 import de.saxsys.mvvmfx.ViewModel;
 import javafx.beans.property.BooleanProperty;
@@ -17,7 +13,6 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
-import javafx.scene.input.MouseEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,7 +20,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * Created by user on 08.05.2017.
+ * Author: Kenji Kokubo on 08.05.17<br>
+ * This class represents the data and functions of the user main window view.
  */
 public class MainWindowViewModel implements ViewModel {
 
@@ -45,10 +41,17 @@ public class MainWindowViewModel implements ViewModel {
     private static Logger logger = LogManager.getLogger(MainWindowView.class);
 
 
+    /**
+     * Initialises the view model
+     */
     public void initialize() {
         this.adjustMainWindowToAuthorisationLevel();
+        this.getSkilledOccupation();
     }
 
+    /**
+     * Adjusts elements on the screen by the currents user's authorisation level
+     */
     private void adjustMainWindowToAuthorisationLevel(){
 
         AuthorisationLevel status = LoginViewModel.currentUser.getRole();
@@ -77,12 +80,17 @@ public class MainWindowViewModel implements ViewModel {
             default:
                 break;
         }
-
+        logger.info("Main Window is set up for " + status.toString());
     }
-    private void getSkilledOccupation(){
-        MySqlDAOFactory daoFactory = new MySqlDAOFactory();
 
-        DidacticWizardDAO didactDAO = MySqlDAOFactory.createDidkatWizardDAO(DBType.DIDACTSQL_DB);
+    /**
+     * The ComboBox of view layer will be provided with information of the database.
+     * So that, the user can choose one of all skilled occupations.
+     */
+    private void getSkilledOccupation(){
+        DAOFactory daoFactory = new DAOFactory();
+
+        DidacticWizardDAO didactDAO = DAOFactory.createDidkatWizardDAO(DBType.DIDACTSQL_DB);
         logger.info("DidactDAO created");
 
         List<String> ausbildungList = null;

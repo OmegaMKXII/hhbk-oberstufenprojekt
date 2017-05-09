@@ -81,7 +81,7 @@ public class MainWindowView implements FxmlView<MainWindowViewModel> {
     /**
      *  This method is triggerd by selecting one of the displayed skilled occupation.
      *  It will call a funtion of the underlying its viewModel: {@link MainWindowViewModel#updateTrainingYearBySkilledOccupation()}
-     * @param actionEvent triggered event
+     * @param actionEvent source of event
      */
     public void skilledOccupationComboBoxEvent(ActionEvent actionEvent) {
         viewModel.updateTrainingYearBySkilledOccupation();
@@ -90,39 +90,39 @@ public class MainWindowView implements FxmlView<MainWindowViewModel> {
     /**
      * Event für die ComboBox für das Ausbildungsjahr
      *
-     * @param actionEvent
+     * @param actionEvent source of event
      */
     public void ausbidungsjahrComboBoxEvent(ActionEvent actionEvent) {
         this.generatePDFButton.disableProperty().bind(viewModel.generatePDFButtonEnabledProperty());
     }
 
     /**
-     * @param mouseEvent
+     * @param mouseEvent source of event
      */
     public void pdfGenerierenButtonEvent(MouseEvent mouseEvent) {
 
     }
 
     /**
-     * @param mouseEvent
+     *
+     * @param mouseEvent source of event
      */
-    public void templateGenerierenButtonEvent(MouseEvent mouseEvent) {
+    public void manageTemplateButtonEvent(MouseEvent mouseEvent) {
         // System.out.print(LoginViewModel.currentUser.getUser());
         Main.switchToTemplate();
     }
 
     /**
-     * @param mouseEvent
+     * @param mouseEvent source of event
      */
-    public void templateLoeschenButtonEvent(MouseEvent mouseEvent) {
+    public void deleteTemplateButtonEvent(MouseEvent mouseEvent) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Möchten Sie das Template wirklich löschen?");
         alert.showAndWait();
     }
 
     /**
-     * a
      *
-     * @param mouseEvent
+     * @param mouseEvent source of event
      */
     public void benutzerverwaltungButtonEvent(MouseEvent mouseEvent) {
         Main.switchToUserAdmin();
