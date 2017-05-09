@@ -5,9 +5,13 @@ import de.hhbk.wizardpdfgen.model.persistence.sql.MySqlUserAdministrationDAO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 /**
  * Author: Kenji Kokubo on 08.05.17 <br>
@@ -18,15 +22,45 @@ public class DBUtil {
 
     private static Logger logger = LogManager.getLogger(MySqlUserAdministrationDAO.class);
 
-    private static final String mySqlUser = "root";
-    private static final String mySqlPwd = "";
-    private static final String mySQLCS = "jdbc:mysql://localhost/DB_DWPC";
+    private static String mySqlUser;
+    private static String mySqlPwd;
+    private static String mySQLCS;
 
-    private static final String didactSqlUser = "root";
-    private static final String didactSqlPwd = "";
-    private static final String didactSQLCS = "jdbc:mysql://localhost/didakt";
+    private static String didactSqlUser;
+    private static String didactSqlPwd;
+    private static String didactSQLCS;
 
-    private static final String mySQLDR = "com.mysql.jdbc.Driver";
+    private static String mySQLDR;
+
+    public static void readConfig() {
+        Properties prop = new Properties();
+        InputStream input = null;
+
+        try {
+            input = new FileInputStream("src/main/resources/config.properties");
+            prop.load(input);
+
+            mySQLDR=prop.getProperty("driver");
+
+            mySqlUser= prop.getProperty("clientUser");
+            mySqlPwd=prop.getProperty("clientPassword");
+            mySQLCS=prop.getProperty("clientJDBC");
+
+            didactSqlUser=prop.getProperty("didaktUser");
+            didactSqlPwd=prop.getProperty("didaktPassword");
+            didactSQLCS=prop.getProperty("didaktJDBC");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
     /**
      * Retrieves connection depending on given database type {@link DBType}
@@ -35,6 +69,7 @@ public class DBUtil {
      * @throws SQLException if a database access error occurs
      */
     public static Connection getConnection(DBType dbType) throws SQLException {
+        readConfig();
         try {
             Class.forName(mySQLDR);
         } catch (ClassNotFoundException e) {
