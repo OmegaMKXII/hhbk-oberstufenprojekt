@@ -1,6 +1,7 @@
 <html>
 <head>
     <link type="text/css" rel="stylesheet" href="src/main/resources/de/hhbk/wizardpdfgen/generator/visualize.css"/>
+    <link type="text/css" rel="stylesheet" href="src/main/resources/de/hhbk/wizardpdfgen/generator/style.css"/>
 </head>
 <body>
 <h3>Detailanzeige</h3>
@@ -18,10 +19,10 @@
     {{#lernsituations}}
     <tr><td colspan="4"><strong>Anforderungssituation : </strong>ohne Bezug</td></tr>
     <tr>
-        <td><strong>Lernsituation {{lsnr}}: </strong>{{name}}</td>
-        <td width="110" align="middle"><strong>Dauer:</strong> {{ustunden}} UStd</td>
-        <td width="80" align="center">ID: {{lsid}}</td>
-        <td width="40" style="background-color:white;text-align: center">-1</td>
+        <td class="lsnr"><strong>Lernsituation {{lsnr}}: </strong>{{name}}</td>
+        <td class="ustunden"><strong>Dauer:</strong> {{ustunden}} UStd</td>
+        <td class="lsi">ID: {{lsid}}</td>
+        <td class="strangeid">-1</td>
     </tr>
 
     <tr><td colspan="4" width="360" valign="top"><strong>Einstiegsszenario:</strong><br/>{{{szenario}}}</td></tr>
@@ -34,7 +35,7 @@
     <tr display="{{displayorganiation}}"><td colspan="4"><strong>Organisatorische Hinweise:</strong><br/>{{{organiation}}}</td></tr>
 
     <tr display="{{displayarbeitstechniken}}"><td colspan="4"><strong>Lern- und Arbeitstechniken:</strong><br/>{{{arbeitstechniken}}}</td></tr>
-    <!--TODO Nachweise-->s
+    <!--TODO Nachweise-->
     <tr display="{{displaynachweis}}"><td colspan="4"><strong>Leistungsnachweis: {{nachweise}}</strong><br/> </td></tr>
     {{/lernsituations}}
     {{/lernfelds}}
