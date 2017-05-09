@@ -10,11 +10,11 @@ USE DB_DWPC;
   
 CREATE TABLE IF NOT EXISTS `User` (
   `UserID` int(255)  NOT NULL AUTO_INCREMENT,
-  `User` varchar(255) DEFAULT NULL,
+  `Username` varchar(255) DEFAULT NULL,
   `Password` varchar(255) DEFAULT NULL,
-  `FK_AuthorizationID` int(6) DEFAULT NULL,
+  `FK_AuthorisationID` int(6) DEFAULT NULL,
   PRIMARY KEY (`UserID`),
-  FOREIGN KEY (FK_AuthorizationID) REFERENCES Authorisation(AuthorisationID));
+  FOREIGN KEY (FK_AuthorisationID) REFERENCES Authorisation(AuthorisationID));
   
   CREATE TABLE IF NOT EXISTS `Template` (
   `TemplateID` int(255)  NOT NULL AUTO_INCREMENT,
@@ -34,29 +34,27 @@ CREATE TABLE IF NOT EXISTS `User` (
   FOREIGN KEY (FK_TemplateID) REFERENCES Template(TemplateID),
   FOREIGN KEY (FK_ConfigurationID) REFERENCES Configuration(ConfigurationID),
   PRIMARY KEY (FK_TemplateID, FK_ConfigurationID));
-  
-  
-  //inserts
-  INSERT INTO Authorisation values
-  (NULL,"Admin"),
-  (NULL,"Teacher"),
-  (NULL,"Guest");
-  
-  INSERT INTO User values
-  (NULL,"Kenji","kenji",1),
-   (NULL,"Dresen","dresen",2),
-  (NULL,"Monika","test",3);
-  
-  INSERT INTO Template values
-  (NULL, "testTemplate1",1),
-  (NULL, "testTemplate2",2),
-   (NULL, "testTemplate3",3);
-   
-   INSERT INTO Configuration values (NULL, "Einstiegsszenario"), (NULL, "Handlungsprodukt/Lernergebnis"), (NULL, "Wesentliche Kompetenzen"), (NULL, "Inhalte"), (NULL, "Unterrichtsmaterialien"), (NULL, "Organisatorische Hinweise"), (NULL, "Lern- und Arbeitstechniken"), (NULL, "Leistungsnachweis");
-  
 
   
-  
-  
+    INSERT INTO Authorisation VALUES
+    (NULL,"ADMIN"),
+    (NULL,"TEACHER"),
+    (NULL,"GUEST");
 
-  
+    INSERT INTO User VALUES
+    (NULL,"K","k",1),
+     (NULL,"Dresen","dresen",2),
+    (NULL,"Monika","test",3);
+	
+	INSERT INTO template (title, fk_userid) VALUES 
+	('kenjis', '1'), 
+	('monis', '3');
+	
+	INSERT INTO configuration (name) VALUES 
+	('kompetenzen'),  
+	('handlungsprodukt');
+	
+	INSERT INTO template_configuration (fk_templateid, fk_configurationid) VALUES 
+	(1, 1),  
+	(2,1),  
+	(1,2);
