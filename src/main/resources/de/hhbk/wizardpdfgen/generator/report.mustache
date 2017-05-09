@@ -1,6 +1,5 @@
 <html>
 <head>
-    <link type="text/css" rel="stylesheet" href="src/main/resources/de/hhbk/wizardpdfgen/generator/foo.css"/>
     <link type="text/css" rel="stylesheet" href="src/main/resources/de/hhbk/wizardpdfgen/generator/visualize.css"/>
 </head>
 <body>
@@ -18,7 +17,7 @@
     <tr><td colspan="4"><strong>Lernfeld {{lfid}}: </strong>{{{description}}}</td></tr>
     {{#lernsituations}}
     <tr><td colspan="4"><strong>Anforderungssituation : </strong>ohne Bezug</td></tr>
-    <tr class="none">
+    <tr>
         <td><strong>Lernsituation {{lsnr}}: </strong>{{name}}</td>
         <td width="110" align="middle"><strong>Dauer:</strong> {{ustunden}} UStd</td>
         <td width="80" align="center">ID: {{lsid}}</td>
@@ -35,7 +34,7 @@
     <tr display="{{displayorganiation}}"><td colspan="4"><strong>Organisatorische Hinweise:</strong><br/>{{{organiation}}}</td></tr>
 
     <tr display="{{displayarbeitstechniken}}"><td colspan="4"><strong>Lern- und Arbeitstechniken:</strong><br/>{{{arbeitstechniken}}}</td></tr>
-    //TODO Nachweise
+    <!--TODO Nachweise-->s
     <tr display="{{displaynachweis}}"><td colspan="4"><strong>Leistungsnachweis: {{nachweise}}</strong><br/> </td></tr>
     {{/lernsituations}}
     {{/lernfelds}}
