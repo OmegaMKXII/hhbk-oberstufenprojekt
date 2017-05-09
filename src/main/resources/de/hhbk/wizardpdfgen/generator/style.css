@@ -21,6 +21,17 @@
     vertical-align: top;
 }
 
+h2
+{
+    color: #6EA5C9;
+    font-size: 30px;
+    font-family: 'Trebuchet MS', Arial, Helvetica, Sans-Serif;
+    text-transform: uppercase;
+    text-align:center;
+    margin-bottom:30px;
+    margin-top:10px;
+}
+
 h3
 {
    color: #6EA5C9;
@@ -185,6 +196,17 @@ table, th, td{
 
 .lsnr {
     width: 65%;
+}
+
+@media print
+{
+    .pagebreakbefore { page-break-before: always }
+    .pagebreakafter { page-break-after: always }
+    table { page-break-after:auto }
+    tr    { page-break-inside:avoid; page-break-after:auto }
+    td    { page-break-inside:avoid; page-break-after:auto }
+    thead { display:table-header-group }
+    tfoot { display:table-footer-group }
 }
 
 

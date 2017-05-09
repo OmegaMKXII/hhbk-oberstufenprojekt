@@ -6,6 +6,7 @@ import java.util.Set;
 
 /**
  * Created by x1n4u on 5/8/17.
+ *
  */
 public class Config {
     String title;

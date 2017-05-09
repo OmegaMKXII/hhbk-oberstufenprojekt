@@ -4,7 +4,9 @@ import de.hhbk.wizardpdfgen.model.enums.DisplayConfig;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -13,6 +15,7 @@ import java.util.Set;
 public class Lernsituation extends Config{
     Integer lsnr, lsid, ustunden;
     String name, szenario, handlungsprodukt, kompentenzen, inhalte, umaterial, organisation, arbeitstechniken;
+    List<Nachweis> nachweise;
 
     public Lernsituation(Set<DisplayConfig> config,ResultSet set) throws SQLException {
         super(config);
@@ -27,9 +30,14 @@ public class Lernsituation extends Config{
         this.umaterial = set.getString("ls.umaterial");
         this.organisation = set.getString("ls.organisation");
         this.arbeitstechniken = set.getString("ls.arbeitstechnik");
+        this.nachweise = new ArrayList<>();
     }
 
     public Lernsituation(ResultSet set) throws SQLException {
         this(new HashSet(), set);
+    }
+
+    public void add(Nachweis nachweis) {
+        nachweise.add(nachweis);
     }
 }

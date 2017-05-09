@@ -4,13 +4,32 @@
     <link type="text/css" rel="stylesheet" href="src/main/resources/de/hhbk/wizardpdfgen/generator/style.css"/>
 </head>
 <body>
-<h3>Detailanzeige</h3>
+<h2>Detailanzeige</h2>
 <h4>Abteilung: {{abteilung}}</h4>
 <h4>Ausbildungsberuf: {{beruf}}</h4>
 <h4>Ausbildungsjahr: {{jahr}}</h4>
 <h4>Unterichtsform: {{unterrichtsform}}</h4>
 <h4>Bildungsgangleitung: {{anrede}} {{bildungsgangleitung}}</h4>
-<table>
+
+
+<h3  class="pagebreakbefore">Inhaltsverzeichniss</h3>
+<ul>
+    {{#fachs}}
+    <li>{{description}}</li>
+    <ul>
+        {{#lernfelds}}
+        <li>Lernfeld {{lfid}}</li>
+        <ul>
+            {{#lernsituations}}
+            <li>Lernsituation {{lsnr}}</li>
+            {{/lernsituations}}
+        </ul>
+        {{/lernfelds}}
+    </ul>
+    {{/fachs}}
+</ul>
+
+<table class="pagebreakbefore">
     <tbody>
     {{#fachs}}
     <tr><td colspan="4"><strong>Fach: </strong>{{{description}}}</td></tr>
@@ -36,7 +55,11 @@
 
     <tr display="{{displayarbeitstechniken}}"><td colspan="4"><strong>Lern- und Arbeitstechniken:</strong><br/>{{{arbeitstechniken}}}</td></tr>
     <!--TODO Nachweise-->
-    <tr display="{{displaynachweis}}"><td colspan="4"><strong>Leistungsnachweis: {{nachweise}}</strong><br/> </td></tr>
+    <tr display="{{displaynachweis}}" class="pagebreakafter"><td colspan="4"><strong>Leistungsnachweis:</strong><br/><ul>
+        {{#nachweise}}
+        <li>{{{art}}}</li>
+        {{/nachweise}}
+    </ul></td></tr>
     {{/lernsituations}}
     {{/lernfelds}}
     {{/fachs}}

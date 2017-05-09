@@ -29,7 +29,7 @@ public class Document {
     }
 
     private PreparedStatement queryData(Connection con, String beruf, int jahr) throws SQLException {
-        PreparedStatement statement = con.prepareStatement("select f.fid, lf.lfid, ls.lsid, f.bezeichnung, l.lehrername, l.geschlecht, u.uformname , a.abteilungsname, lf.bezeichnung, ls.lsnr, ls.name, ls.ustunden, ls.lsid, ls.szenario, ls.handlungsprodukt, ls.kompetenzen, ls.inhalte, ls.umaterial, ls.organisation, ls.arbeitstechnik  from tbl_fach as f " +
+        PreparedStatement statement = con.prepareStatement("select f.fid, lf.lfid, ls.lsid, ln.lnid, ln.art, f.bezeichnung, l.lehrername, l.geschlecht, u.uformname , a.abteilungsname, lf.bezeichnung, ls.lsnr, ls.name, ls.ustunden, ls.lsid, ls.szenario, ls.handlungsprodukt, ls.kompetenzen, ls.inhalte, ls.umaterial, ls.organisation, ls.arbeitstechnik  from tbl_fach as f " +
                 "join tbl_beruffach as bf on bf.id_fach = f.fid " +
                 "join tbl_lernfeld as lf on lf.id_beruffach = bf.bfid " +
                 "join tbl_lernsituation as ls on ls.id_lernfeld = lf.lfid " +
@@ -38,14 +38,18 @@ public class Document {
                 "join tbl_beruf as b on b.bid = ub.id_beruf " +
                 "join tbl_abteilung as a on a.aid = b.id_abteilung " +
                 "join tbl_lehrer as l on l.lid = b.id_bleitung " +
+                "join tbl_lernsituationleistungsnachweis as lln on lln.id_lernsituation = ls.lsid " +
+                "join tbl_leistungsnachweis as ln on ln.lnid = lln.id_leistungsnachweis " +
                 "where bf.Jahr = ? and b.berufname = ? " +
-                "order by f.lernbereich, f.fid, lf.lfid, ls.lsid;");
+                "order by f.lernbereich, f.fid, lf.lfid, ls.lsid, ln.lnid;");
         statement.setString(2,beruf);
         statement.setInt(1, jahr);
         return statement;
     }
 
     public void getDocumentData(Connection con, String beruf, int jahr) throws SQLException {
+        this.beruf = beruf;
+        this.jahr = jahr;
         ResultSet set = queryData(con, beruf, jahr).executeQuery();
         set.next();
         abteilung = set.getString("a.abteilungsname");
@@ -59,7 +63,13 @@ public class Document {
                 Lernfeld lernfeld = new Lernfeld(set);
                 fach.add(lernfeld);
                 do {
-                    lernfeld.add(new Lernsituation(config, set));
+                    Lernsituation lernsituation = new Lernsituation(config, set);
+                    lernfeld.add(lernsituation);
+                    Nachweis nachweis;
+                    do {
+                        nachweis = new Nachweis(set);
+                        lernsituation.add(nachweis);
+                    } while (nachweis.next());
                 } while (lernfeld.next());
             } while (fach.next());
         } while(set.next());
@@ -83,6 +93,7 @@ public class Document {
         HashSet<DisplayConfig> config = new HashSet();
         config.add(DisplayConfig.ATECHNIKEN);
         config.add(DisplayConfig.INHALTE);
+        config.add(DisplayConfig.NACHWEISE);
 
         Document doc = new Document(config);
         doc.generate(new File("foo.pdf"), con, "Fachinformatiker/in Anwendungsentwicklung", 1);
