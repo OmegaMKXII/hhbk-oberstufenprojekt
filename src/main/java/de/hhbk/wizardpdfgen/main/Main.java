@@ -15,6 +15,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class Main extends Application {
 
     private static Stage stage;
@@ -24,26 +27,19 @@ public class Main extends Application {
     private static Scene templateScene;
     private static Scene userAdminScene;
 
+    private static Logger logger = LogManager.getLogger(Main.class);
+
     @Override
     public void start(Stage primaryStage) throws Exception {
 
+        logger.info("Applikation gestartet");
         Main.stage = primaryStage;
 
         // Loads the object hierarchy from each FXML document
         final ViewTuple<LoginView, LoginViewModel> viewTupleLogin = FluentViewLoader.fxmlView(LoginView.class).load();
         final Parent loginWindow = viewTupleLogin.getView();
 
-       // final ViewTuple<MainWindowView, MainWindowViewModel> viewTupleMain = FluentViewLoader.fxmlView(MainWindowView.class).load();
-        //final Parent mainWindow = viewTupleMain.getView();
-
-        final ViewTuple<TemplateView, TemplateViewModel> viewTupleTemplate = FluentViewLoader.fxmlView(TemplateView.class).load();
-        final Parent templateWindow = viewTupleTemplate.getView();
-
-        //final ViewTuple<UserAdminView, UserAdminViewModel> viewTupleUserAdmin = FluentViewLoader.fxmlView(UserAdminView.class).load();
-        //final Parent userAdminWindow = viewTupleUserAdmin.getView();
-
         loginScene = new Scene(loginWindow);
-        templateScene = new Scene(templateWindow);
 
         primaryStage.setScene(loginScene);
         primaryStage.setTitle("Login");
@@ -60,6 +56,9 @@ public class Main extends Application {
     }
 
     public static void switchToTemplate() {
+        final ViewTuple<TemplateView, TemplateViewModel> viewTupleTemplate = FluentViewLoader.fxmlView(TemplateView.class).load();
+        final Parent templateWindow = viewTupleTemplate.getView();
+        templateScene = new Scene(templateWindow);
         stage.setScene(templateScene);
         stage.setTitle("Template");
     }

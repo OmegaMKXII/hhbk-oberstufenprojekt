@@ -1,9 +1,10 @@
 package de.hhbk.wizardpdfgen.viewmodel;
 
-import de.hhbk.wizardpdfgen.main.Main;
 import de.hhbk.wizardpdfgen.model.base.User;
 import de.hhbk.wizardpdfgen.model.enums.AuthorisationLevel;
-import de.hhbk.wizardpdfgen.model.persistence.sql.MySqlUserAdministrationDAO;
+import de.hhbk.wizardpdfgen.model.enums.DBType;
+import de.hhbk.wizardpdfgen.model.persistence.interfaces.UserAdministrationDAO;
+import de.hhbk.wizardpdfgen.model.persistence.sql.DAOFactory;
 import de.hhbk.wizardpdfgen.view.UserAdminView;
 import de.saxsys.mvvmfx.ViewModel;
 import javafx.beans.property.SimpleStringProperty;
@@ -12,12 +13,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
-import javafx.scene.input.MouseEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
- * Created by user on 08.05.2017.
+ * Author: Kenji Kokubo on 08.05.17<br>
+ * This class represents the data and functions of the user administration view.
  */
 public class UserAdminViewModel implements ViewModel {
 
@@ -28,40 +32,41 @@ public class UserAdminViewModel implements ViewModel {
 
     private ObservableList<User> userObservableList  = FXCollections.observableArrayList();
 
-    private MySqlUserAdministrationDAO mySqlUserAdministrationDAO;
+    private UserAdministrationDAO userAdministrationDAO;
 
+    private static Logger logger = LogManager.getLogger(UserAdminView.class);
 
+    /**
+     * Retrieves data from database for view.
+     * @throws SQLException if an IO error occurs
+     */
+    public void initialize() throws SQLException {
 
-    public void initialize(){
+        this.userAdministrationDAO = DAOFactory.createUserAdminDAO(DBType.MYSQL_DB);
 
-        List<User> userList = MySqlUserAdministrationDAO.selectAllUser();
-
-        for (User u :userList)
-        {
-            userObservableList.add(new User(u.getUsername(),u.getPassword(),u.getRole()));
-        }
+        List<User> userList = this.userAdministrationDAO.getAllUser();
+        this.userObservableList.addAll(userList);
     }
 
     /**
      * Deletes user depending on selected item in listView
+     * @throws SQLException if an IO error occurs
      */
-    public void deleteUser() {
+    public void deleteUser() throws SQLException {
 
         User user = (User)listviewUser.getSelectionModel().getSelectedItem();
-        boolean isDeleted = MySqlUserAdministrationDAO.deleteUser(user.getUsername(),user.getPassword());
+        boolean isDeleted = this.userAdministrationDAO.deleteUser(user);
 
         if(isDeleted)
         {
             userObservableList.remove(listviewUser.getSelectionModel().getSelectedItem());
-            listviewUser.refresh();
         }
     }
-
 
     /**
      * Adds user by reading Textfield's content for username and password
      */
-    public void addUser() {
+    public void addUser() throws SQLException {
 
         String username =  getUsername();
         String password = getPassword();
@@ -73,7 +78,7 @@ public class UserAdminViewModel implements ViewModel {
         }
 
         User usr = new User(username, password, AuthorisationLevel.TEACHER);
-        boolean isAdded = MySqlUserAdministrationDAO.insertUser(usr);
+        boolean isAdded = this.userAdministrationDAO.insertUser(usr);
 
         if(isAdded)
         {
@@ -84,14 +89,6 @@ public class UserAdminViewModel implements ViewModel {
         this.userObservableList.add(usr);
 
         listviewUser.refresh();
-    }
-
-
-    /**
-     * Returns to menu, if
-     */
-    public void returnToMainWindow() {
-        Main.switchToMain();
     }
 
     public String getUsername() {

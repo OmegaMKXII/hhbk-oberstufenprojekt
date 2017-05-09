@@ -10,6 +10,11 @@ import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by monikaschepan on 02.05.17.
@@ -34,18 +39,24 @@ public class UserAdminView implements FxmlView<UserAdminViewModel> {
     TextField passwordTextfield;
 
     @FXML
+    ComboBox<AuthorisationLevel> userAuthoristaionComboBox;
+
+    @FXML
     Label usernameLabel;
 
     @FXML
     Label passwordLabel;
 
     @FXML
-    Label BenutzerVerwaltungLabel;
+    Label userAdminLabel;
+
+    @FXML
+    Label userAuthoristaionLabel;
 
     @InjectViewModel
     UserAdminViewModel viewModel;
 
-
+    private static Logger logger = LogManager.getLogger(UserAdminView.class);
 
     @FXML
     public void initialize() {
@@ -58,22 +69,44 @@ public class UserAdminView implements FxmlView<UserAdminViewModel> {
 
         viewModel.setListView(this.listviewUser);
 
-        viewModel.initialize();
-
+        try {
+            viewModel.initialize();
+        } catch (SQLException e) {
+            logger.info("Nutzer wird über Funktionsausfall informiert");
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Es ist ein Fehler beim Datenbankzugriff aufgetreten");
+            alert.showAndWait();
+            alert.setTitle("Datenbankzugriff gescheitert");
+            alert.setContentText("Folge: Es können keine Nutzerdaten gesehen noch bearbeitet werden.");
+        }
     }
 
-    public void benutzerLoeschenButtonEvent(MouseEvent mouseEvent) {
-        this.viewModel.deleteUser();
+    public void deleteUserButtonEvent(MouseEvent mouseEvent) {
+        try {
+            this.viewModel.deleteUser();
+            listviewUser.refresh();
+        } catch (SQLException e) {
+            logger.info("Nutzer wird über Funktionsausfall informiert");
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Es ist ein Fehler beim Datenbankzugriff aufgetreten");
+            alert.showAndWait();
+            alert.setTitle("Datenbankzugriff gescheitert");
+            alert.setContentText("Folge: Es können keine Nutzerdaten bearbeitet werden.");
+        }
     }
 
-
-    public void benutzerHinzufuegenButtonEvent(MouseEvent mouseEvent) {
-        viewModel.addUser();
+    public void addUserButtonEvent(MouseEvent mouseEvent) {
+        try {
+            this.viewModel.addUser();
+        } catch (SQLException e) {
+            logger.info("Nutzer wird über Funktionsausfall informiert");
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Es ist ein Fehler beim Datenbankzugriff aufgetreten");
+            alert.showAndWait();
+            alert.setTitle("Datenbankzugriff gescheitert");
+            alert.setContentText("Folge: Es können keine Nutzerdaten bearbeitet werden.");
+        }
     }
 
     public void zurueckButtonEvent(MouseEvent mouseEvent) {
         Main.switchToMain();
     }
-
 
 }

@@ -1,12 +1,7 @@
 package de.hhbk.wizardpdfgen.view;
 
 import de.hhbk.wizardpdfgen.main.Main;
-import de.hhbk.wizardpdfgen.model.base.Ausbildung;
-import de.hhbk.wizardpdfgen.model.base.User;
-import de.hhbk.wizardpdfgen.model.enums.AuthorisationLevel;
-import de.hhbk.wizardpdfgen.model.persistence.sql.MySqlAusbildungDAO;
-import de.hhbk.wizardpdfgen.model.persistence.sql.MySqlUserAdministrationDAO;
-import de.hhbk.wizardpdfgen.viewmodel.LoginViewModel;
+import de.hhbk.wizardpdfgen.model.persistence.sql.DidacticWizardDAO;
 import de.hhbk.wizardpdfgen.viewmodel.MainWindowViewModel;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
@@ -14,104 +9,95 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
  * Created by monikaschepan on 02.05.17.
  */
-public class MainWindowView implements FxmlView<MainWindowViewModel>{
-
-
-    @FXML
-    Label ausbildungsjahrLabel;
+public class MainWindowView implements FxmlView<MainWindowViewModel> {
 
     @FXML
-    Label ausbildungsberufLabel;
+    Label guideLabel;
 
     @FXML
-    Button templateGenerierenButton;
+    Label trainingYearLabel;
 
     @FXML
-    Button benutzerverwaltungButton;
+    Label skilledOccupationLabel;
 
     @FXML
-    Button templateLoeschenButton;
+    Button userAdminButton;
 
     @FXML
-    Button pdfGenerierenButton;
+    Button generateTemplateButton;
+
+    @FXML
+    Button deleteTemplateButton;
+
+    @FXML
+    Button generatePDFButton;
 
     @FXML
     ListView listviewMainWIndow;
 
     @FXML
-    ComboBox<String> ausbidungsberufComboBox;
+    ComboBox<String> skilledOccupationComboBox;
 
     @FXML
-    ComboBox<Integer> ausbildungsjahrComboBox;
+    ComboBox<Integer> trainingYearComboBox;
 
     @InjectViewModel
     MainWindowViewModel viewModel;
 
+    private static Logger logger = LogManager.getLogger(MainWindowView.class);
+
     @FXML
     public void initialize() {
-        pdfGenerierenButton.setVisible(false);
-        AuthorisationLevel status = LoginViewModel.currentUser.getRole();
-        switch (status)
-        {
-            case TEACHER:
-                benutzerverwaltungButton.setVisible(false);
-                templateLoeschenButton.setVisible(true);
-                templateGenerierenButton.setVisible(true);
-                pdfGenerierenButton.setVisible(true);
-                break;
 
-            case GUEST:
-                benutzerverwaltungButton.setVisible(false);
-                templateGenerierenButton.setVisible(false);
-                templateLoeschenButton.setVisible(false);
-                pdfGenerierenButton.setVisible(true);
-                break;
+        viewModel.initialize();
 
-            case ADMIN:
-                benutzerverwaltungButton.setVisible(true);
-                templateGenerierenButton.setVisible(true);
-                templateLoeschenButton.setVisible(true);
-                pdfGenerierenButton.setVisible(true);
-                break;
-            default:
-                break;
-        }
+        this.skilledOccupationComboBox.setItems(viewModel.getSkilledOccupationList());
+        this.trainingYearComboBox.setItems(viewModel.getTrainingYearList());
+        this.guideLabel.textProperty()
+                .bindBidirectional(viewModel.guideTextProperty());
 
-        List<Ausbildung> ausbildungList = MySqlAusbildungDAO.selectAusbildungsberuf();
-        for (Ausbildung a :ausbildungList)
-        {
-            ausbidungsberufComboBox.getItems().setAll(a.getAusbildungsberuf());
-        }
+        this.userAdminButton.visibleProperty().bind(viewModel.userAdminButtonVisibilityProperty());
+        this.deleteTemplateButton.visibleProperty().bind(viewModel.deleteTemplateButtonVisibilityProperty());
+        this.generateTemplateButton.visibleProperty().bind(viewModel.generateTemplateButtonVisibilityProperty());
+        this.generatePDFButton.visibleProperty().bind(viewModel.generatePDFButtonVisibilityProperty());
 
-     //   ausbidungsberufComboBox.getItems().setAll("Fachinformatiker");
-        ausbildungsjahrComboBox.getItems().setAll(1,2,3);
-        ausbidungsberufComboBox.setPromptText("Bitte auswählen");
-        ausbildungsjahrComboBox.setPromptText("Bitte auswählen");
+        this.generatePDFButton.disableProperty().bind(viewModel.generatePDFButtonEnabledProperty());
+
+       // TODO Delete
+        trainingYearComboBox.getItems().setAll(1, 2, 3);
+
     }
 
+
     /**
-     * Event für die ComboBox für den Ausbildungsberuf
-     * @param actionEvent
+     *  This method is triggerd by selecting one of the displayed skilled occupation.
+     *  It will call a funtion of the underlying its viewModel: {@link MainWindowViewModel#updateTrainingYearBySkilledOccupation()}
+     * @param actionEvent source of event
      */
-    public void ausbidungsberufComboBoxEvent(ActionEvent actionEvent) {
+    public void skilledOccupationComboBoxEvent(ActionEvent actionEvent) {
+        viewModel.updateTrainingYearBySkilledOccupation();
     }
 
     /**
      * Event für die ComboBox für das Ausbildungsjahr
-     * @param actionEvent
+     *
+     * @param actionEvent source of event
      */
     public void ausbidungsjahrComboBoxEvent(ActionEvent actionEvent) {
+        this.generatePDFButton.disableProperty().bind(viewModel.generatePDFButtonEnabledProperty());
     }
 
     /**
-     *
-     * @param mouseEvent
+     * @param mouseEvent source of event
      */
     public void pdfGenerierenButtonEvent(MouseEvent mouseEvent) {
 
@@ -119,25 +105,24 @@ public class MainWindowView implements FxmlView<MainWindowViewModel>{
 
     /**
      *
-     * @param mouseEvent
+     * @param mouseEvent source of event
      */
-    public void templateGenerierenButtonEvent(MouseEvent mouseEvent) {
-       // System.out.print(LoginViewModel.currentUser.getUser());
+    public void manageTemplateButtonEvent(MouseEvent mouseEvent) {
+        // System.out.print(LoginViewModel.currentUser.getUser());
         Main.switchToTemplate();
     }
 
     /**
-     *
-     * @param mouseEvent
+     * @param mouseEvent source of event
      */
-    public void templateLoeschenButtonEvent(MouseEvent mouseEvent) {
+    public void deleteTemplateButtonEvent(MouseEvent mouseEvent) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Möchten Sie das Template wirklich löschen?");
         alert.showAndWait();
     }
 
     /**
-     * a
-     * @param mouseEvent
+     *
+     * @param mouseEvent source of event
      */
     public void benutzerverwaltungButtonEvent(MouseEvent mouseEvent) {
         Main.switchToUserAdmin();

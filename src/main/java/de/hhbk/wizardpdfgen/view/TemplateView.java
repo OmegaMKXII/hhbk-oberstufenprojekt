@@ -45,17 +45,6 @@ public class TemplateView implements FxmlView<TemplateViewModel> {
     @FXML
     public void initialize() {
 
-        templateGenerierenButton.setVisible(false);
-        List<Configuration> configurationList = MySqlTemplateDAO.selectAllConfigurations();
-        for (Configuration c :configurationList)
-        {
-            templateObservableList.add(new Configuration(c.getId(), c.getName()));
-
-        }
-        listviewTemplate.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        listviewTemplate.setItems(templateObservableList);
-
-
     }
 
     public void TemplateGenerierenButtonEvent(MouseEvent mouseEvent) {

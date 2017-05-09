@@ -3,37 +3,53 @@ package de.hhbk.wizardpdfgen.viewmodel;
 import de.hhbk.wizardpdfgen.main.Main;
 import de.hhbk.wizardpdfgen.model.base.User;
 import de.hhbk.wizardpdfgen.model.enums.AuthorisationLevel;
-import de.hhbk.wizardpdfgen.model.persistence.sql.MySqlUserAdministrationDAO;
+import de.hhbk.wizardpdfgen.model.enums.DBType;
+import de.hhbk.wizardpdfgen.model.persistence.interfaces.UserAdministrationDAO;
+import de.hhbk.wizardpdfgen.model.persistence.sql.DAOFactory;
+import de.hhbk.wizardpdfgen.view.LoginView;
+import de.saxsys.mvvmfx.ViewModel;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-
-import de.saxsys.mvvmfx.ViewModel;
 import javafx.scene.control.Alert;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.sql.SQLException;
 
 /**
- * Created by user on 03.05.2017.
+ * Author: Kenji Kokubo on 08.05.17<br>
+ * This class represents the data and functions of the login view.
  */
 public class LoginViewModel implements ViewModel {
 
-    public static User currentUser = new User("dummy", "Dummy", AuthorisationLevel.GUEST);
+    public static User currentUser = new User("Dummy", "Dummy", AuthorisationLevel.GUEST);
 
     private StringProperty username = new SimpleStringProperty();
     private StringProperty password = new SimpleStringProperty();
 
-    private MySqlUserAdministrationDAO adminDAO = new MySqlUserAdministrationDAO();
-
+    private static Logger logger = LogManager.getLogger(LoginView.class);
 
     /**
-     * Logs in user
+     * This method reads user input regarding his username and password.<br>
+     * These informations are checked with the use of the database.<br>
+     * If given username and password combination exists, the user logged in successfully;
+     * Otherwise he will be prompted to another attempt.
      */
     public void logIn() {
-        // Find user, whih matches to given username and password - the combination of username and password is unique
+        // Find user, which matches to given username and password - the combination of username and password is unique
 
-        User usr = adminDAO.selectPasswordByUser(getUsername(),getPassword());
+        User usr = null;
+        UserAdministrationDAO userAdminDAO = DAOFactory.createUserAdminDAO(DBType.MYSQL_DB);
+        try {
+            usr = userAdminDAO.getUser(getUsername(),getPassword());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         if(usr != null) {
-            String password = usr.getPassword();
             String username = usr.getUsername();
+            String password = usr.getPassword();
 
+            logger.info("Login als " + getUsername());
             if (getPassword().equals(password) && getUsername().equals(username)) {
                 LoginViewModel.currentUser = usr;
                 Main.switchToMain();

@@ -2,189 +2,191 @@ package de.hhbk.wizardpdfgen.model.persistence.sql;
 
 import de.hhbk.wizardpdfgen.model.base.User;
 import de.hhbk.wizardpdfgen.model.enums.AuthorisationLevel;
+import de.hhbk.wizardpdfgen.model.enums.DBType;
 import de.hhbk.wizardpdfgen.model.persistence.interfaces.UserAdministrationDAO;
+import de.hhbk.wizardpdfgen.model.persistence.util.DBUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
- * Created by user on 03.05.2017.
+ * Author: Monica Schepan on 05.05.17 <br>
+ * Edited by: Kenji Kokubo on 08.05.17<br>
+ * This class is the data access object for the user administration tables.<br>
+ * It supports CRD-operation on user
  */
 public class MySqlUserAdministrationDAO implements UserAdministrationDAO {
 
 
-    // MySQL
-    private static final String DRIVER_NAME = "com.mysql.jdbc.Driver";
-    private static final String DB_URL = "jdbc:mysql://localhost/DB_DWPC";
-    private static final String ID = "root";
-    private static final String PASS = "";
+    private static final String GET_ALL_USER = "SELECT  USER.USERNAME, USER.PASSWORD, AUTHORISATION.ROLE FROM USER INNER JOIN AUTHORISATION ON FK_AUTHORISATIONID = AUTHORISATION.AUTHORISATIONID";
+    private static final String GET_USER_BY_NAME_PASSWD = "SELECT USER.USERNAME, USER.PASSWORD, AUTHORISATION.ROLE FROM USER INNER JOIN AUTHORISATION ON FK_AUTHORISATIONID = AUTHORISATION.AUTHORISATIONID WHERE USER.PASSWORD = ? AND USER.USERNAME = ?";
+    private static final String INSERT_USER = "INSERT INTO USER(USERID, USERNAME, PASSWORD, FK_AUTHORIZATIONID) VALUES (NULL,?,?,?)";
+    private static final String DELETE_USER = "DELETE FROM USER WHERE USER.USERNAME = ? AND USER.PASSWORD = ?";
 
-    // MySQL Statement
-    private static final String GET_ALL_USER = "SELECT  USER.USER, USER.PASSWORD, AUTHORISATION.Role FROM USER inner join AUTHORISATION on FK_AuthorisationID = Authorisation.AuthorisationID";
-
-    private static final String FIND_ID_FROM_USER = "SELECT USER.USERID FROM USER  WHERE USER.USER = ?"; // TODO used?
-
-    private static final String FIND_PASSWORD_BY_USER_PASSWORD = "SELECT USER.USER, USER.PASSWORD, Authorisation.Role FROM USER inner join Authorisation on FK_AuthorisationID = Authorisation.AuthorisationID WHERE USER.Password = ? and USER.USER = ?";
-
-    private static final String INSERT_USER = "Insert into User(UserID, User, Password, FK_AuthorizationID) VALUES (NULL,?,?,2) ";
-
-    private static final String DELETE_USER = "Delete from User where User.User = ? and User.password = ? ";
-
-
-    public MySqlUserAdministrationDAO() {
-        ArrayList<User> administrationList = new ArrayList<User>();
-    }
-
-    public static List<User> selectUserID(String user) {
-        List<User> userListe = new ArrayList<User>();
-        try {
-            PreparedStatement statement = getConnection().prepareStatement(FIND_ID_FROM_USER);
-            statement.setString(1, user);
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                // TODO userListe.add(new User(rs.getInt(1)));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                getConnection().close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return userListe;
-    }
+    private static Logger logger = LogManager.getLogger(MySqlUserAdministrationDAO.class);
 
     /**
      * Searches for user and password.<br>
      * If there is no entry with this username and its corresponding password, null will be returned.
-     * @param username - name of the user
-     * @param password - password
-     * @return The user if found, null otherwise
+     *
+     * @param username name of the user
+     * @param password password
+     * @return user object if demanded user was found, null otherwise
+     * @throws SQLException if an IO error occurs
      */
-    public User selectPasswordByUser(String username, String password) {
+    public User getUser(String username, String password) throws SQLException {
+
+        Connection conn = null;
         User foundUser = null;
+
         try {
-            PreparedStatement statement = getConnection().prepareStatement(FIND_PASSWORD_BY_USER_PASSWORD);
+            conn = DBUtil.getConnection(DBType.MYSQL_DB);
+            PreparedStatement statement = conn.prepareStatement(GET_USER_BY_NAME_PASSWD);
             statement.setString(1, password);
             statement.setString(2, username);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                // TODO Gleiche Daten
                 String db_username = rs.getString(1);
                 String db_password = rs.getString(2);
                 String authLevelString = rs.getString(3);
-                AuthorisationLevel authLevel = AuthorisationLevel.valueOf(authLevelString);
+                AuthorisationLevel authLevel = AuthorisationLevel.valueOf(authLevelString.toUpperCase());
 
                 foundUser = new User(db_username, db_password, authLevel);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            String errMsg = "Error while connecting to database";
+            logger.error(errMsg);
+            throw new SQLException(errMsg, e);
         } finally {
             try {
-                getConnection().close();
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException e) {
-                e.printStackTrace();
+                String errMsg = "Error while closing the connection to database";
+                logger.error(errMsg);
+                throw new SQLException(errMsg, e);
             }
         }
-
         return foundUser;
     }
 
 
-    public static List<User> selectAllUser() {
+    /**
+     * Retrieves all user on database.
+     *
+     * @return list of users; if there are no user entries, an empty list will be returned
+     */
+    public List<User> getAllUser() throws SQLException {
+
+        Connection conn = null;
         List<User> userListe = new ArrayList<User>();
+
         try {
-            PreparedStatement statement = getConnection().prepareStatement(GET_ALL_USER);
+            conn = DBUtil.getConnection(DBType.MYSQL_DB);
+            PreparedStatement statement = conn.prepareStatement(GET_ALL_USER);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                //TODO gleicher Code
                 String db_username = rs.getString(1);
                 String db_password = rs.getString(2);
-                String authLevelString = rs.getString(3);
-                AuthorisationLevel authLevel = AuthorisationLevel.valueOf(authLevelString);
+                String db_authLvl = rs.getString(3);
+                AuthorisationLevel authLevel = AuthorisationLevel.valueOf(db_authLvl.toUpperCase());
 
                 userListe.add(new User(db_username, db_password, authLevel));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            String errMsg = "Error while connecting to database";
+            logger.error(errMsg);
+            throw new SQLException(errMsg, e);
         } finally {
             try {
-                getConnection().close();
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException e) {
-                e.printStackTrace();
+                String errMsg = "Error while closing the connection to database";
+                logger.error(errMsg);
+                throw new SQLException(errMsg, e);
             }
         }
-
         return userListe;
     }
 
-
-    public static boolean insertUser(User u) {
+    /**
+     * Adds a user into databases.
+     *
+     * @param usr user to be added
+     * @return true, if user has been deleted successfully; false otherwise
+     * @throws SQLException if an IO error occurs
+     */
+    public boolean insertUser(User usr) throws SQLException {
+        Connection conn = null;
         try {
-            PreparedStatement statement = getConnection().prepareStatement(INSERT_USER);
+            conn = DBUtil.getConnection(DBType.MYSQL_DB);
+            PreparedStatement statement = conn.prepareStatement(INSERT_USER);
 
-            String user = u.getUsername();
-            String password = u.getPassword();
-            statement.setString(1, u.getUsername());
-            statement.setString(2, u.getPassword());
+            String user = usr.getUsername();
+            String password = usr.getPassword();
+            statement.setString(1, usr.getUsername());
+            statement.setString(2, usr.getPassword());
+            statement.setString(3, usr.getRole().toString());
             statement.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            String errMsg = "Error while connecting to database";
+            logger.error(errMsg);
+            throw new SQLException(errMsg, e);
         } finally {
             try {
-                getConnection().close();
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException e) {
-                e.printStackTrace();
+                String errMsg = "Error while closing the connection to database";
+                logger.error(errMsg);
+                throw new SQLException(errMsg, e);
             }
         }
         return true;
     }
 
 
-    private static Connection getConnection() {
+    /**
+     * Deletes a user from database.
+     *
+     * @param usr user to be deleted
+     * @return true, if user has been deleted successfully; false otherwise
+     * @throws SQLException if an IO error occurs
+     */
+    public boolean deleteUser(User usr) throws SQLException {
+        Connection conn = null;
         try {
-            Class.forName(DRIVER_NAME);
-            return DriverManager.getConnection(DB_URL, ID, PASS);
-        } catch (Exception e) {
-            // e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-    }
-
-
-    private static void close(Connection con) {
-        if (con != null) {
-            try {
-                con.close();
-            } catch (SQLException e) {
-                // e.printStackTrace();
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
-
-    public static boolean deleteUser(String user, String password) {
-        try {
-            PreparedStatement statement = getConnection().prepareStatement(DELETE_USER);
-            statement.setString(1, user);
-            statement.setString(2, password);
+            conn = DBUtil.getConnection(DBType.MYSQL_DB);
+            PreparedStatement statement = conn.prepareStatement(DELETE_USER);
+            statement.setString(1, usr.getUsername());
+            statement.setString(2, usr.getPassword());
             statement.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            String errMsg = "Error while connecting to database";
+            logger.error(errMsg);
+            throw new SQLException(errMsg, e);
         } finally {
             try {
-                getConnection().close();
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException e) {
-                e.printStackTrace();
+                String errMsg = "Error while closing the connection to database";
+                logger.error(errMsg);
+                throw new SQLException(errMsg, e);
             }
         }
         return true;
     }
-
-
 }

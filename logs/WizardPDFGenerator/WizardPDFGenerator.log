@@ -1,0 +1,8 @@
+2017-05-09 09:09:08.018 [JavaFX Application Thread] INFO  de.hhbk.wizardpdfgen.main.Main - Applikation gestartet
+2017-05-09 09:09:08.920 [JavaFX Application Thread] INFO  de.hhbk.wizardpdfgen.view.LoginView - LoginViewModel initialisiert
+2017-05-09 09:09:21.143 [JavaFX Application Thread] ERROR de.hhbk.wizardpdfgen.model.persistence.sql.MySqlUserAdministrationDAO - Error while connecting to database
+2017-05-09 09:09:44.873 [JavaFX Application Thread] INFO  de.hhbk.wizardpdfgen.view.LoginView - Login als K
+2017-05-09 09:09:44.886 [JavaFX Application Thread] INFO  de.hhbk.wizardpdfgen.view.MainWindowView - Main Window is set up for ADMIN
+2017-05-09 09:09:44.888 [JavaFX Application Thread] INFO  de.hhbk.wizardpdfgen.view.MainWindowView - DidactDAO created
+2017-05-09 09:09:45.026 [JavaFX Application Thread] INFO  de.hhbk.wizardpdfgen.view.MainWindowView - Main Window is set up for ADMIN
+2017-05-09 09:09:45.027 [JavaFX Application Thread] INFO  de.hhbk.wizardpdfgen.view.MainWindowView - DidactDAO created
